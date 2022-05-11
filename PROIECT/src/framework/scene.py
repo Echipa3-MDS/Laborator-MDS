@@ -25,6 +25,11 @@ class Scene(RenderedObject):
         self.bgColor = color
 
 
+    def OnSceneExit(self):
+        # Implementata de tipurile derivate
+        pass
+
+
     def _Draw(self) -> None:
         if self.bgImage is not None:
             pygame.display.get_surface().blit(self.bgImage, self._frame)

@@ -5,6 +5,8 @@ from .events_manager import EventsManager
 from .update_scheduler import UpdateScheduler
 from .scene import Scene
 
+from game.first_scene_example import FirstSceneExample
+
 
 class App:
     __instance = None
@@ -33,22 +35,24 @@ class App:
         self.display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
         pygame.display.set_caption("Proiect MDS")
 
+        # Prima scena rulata de aplicatie
+        firstScene = FirstSceneExample()
+
         # Scena afisata de aplicatie
-        self.currentScene = None
+        self.currentScene = firstScene
 
         self.eventManager = EventsManager.GetInstance()
         self.updateScheduler = UpdateScheduler.GetInstance()
     
 
     def PlayNewScene(self, scene: Scene) -> None:
+        self.currentScene.OnSceneExit()
         self.eventManager.ClearListeners()
         self.updateScheduler.ClearSchedule()
         self.currentScene = scene
 
 
-    def Run(self, firstScene: Scene) -> None:
-        self.currentScene = firstScene
-
+    def Run(self) -> None:
         isRunning = True
         while isRunning:
             self.updateScheduler.CalculateDeltaTime()

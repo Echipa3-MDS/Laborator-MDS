@@ -77,3 +77,16 @@ class TestScene(unittest.TestCase):
         scene._Draw()
         newPixelBuffer = display.get_view().raw
         self.assertNotEqual(oldPixelBuffer, newPixelBuffer)
+
+    def test_OnSceneExit(self):
+        class TestScene(Scene):
+            def __init__(self) -> None:
+                super().__init__()
+                self.sceneExit = False
+            
+            def OnSceneExit(self):
+                self.sceneExit = True
+        
+        testScene = TestScene()
+        testScene.OnSceneExit()
+        self.assertTrue(testScene.sceneExit)

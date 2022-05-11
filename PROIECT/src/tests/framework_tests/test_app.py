@@ -71,7 +71,8 @@ class TestApp(unittest.TestCase):
         pygame.event.post(pygame.event.Event(pygame.USEREVENT))
         pygame.event.post(pygame.event.Event(pygame.USEREVENT))
         pygame.event.post(pygame.event.Event(pygame.QUIT))
-        App.GetInstance().Run(scene)
+        App.GetInstance().currentScene = scene
+        App.GetInstance().Run()
         ranFrames = min(scene.numberOfUpdates, scene.numberOfEvents)
         
         App.Quit()
