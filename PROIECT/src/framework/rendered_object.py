@@ -56,6 +56,10 @@ class RenderedObject:
         return self._frame.size
 
 
+    def GetRect(self) -> pygame.Rect:
+        return self._frame
+    
+
     def _Draw(self) -> None:
         # Implementata de tipurile derivate
         pass
