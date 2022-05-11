@@ -59,3 +59,5 @@ class App:
             isRunning = self.eventManager.ProcessEvents()
             self.updateScheduler.UpdateAll()
             self.currentScene.DrawScene()
+            
+        self.currentScene.OnSceneExit()
