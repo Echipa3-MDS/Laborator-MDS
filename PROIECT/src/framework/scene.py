@@ -25,6 +25,11 @@ class Scene(RenderedObject):
         self.bgColor = color
 
 
+    def SetAlphaLevel(self, alpha: int) -> None:
+        if self.bgImage is not None:
+            self.bgImage.set_alpha(alpha)
+
+
     def OnSceneEnter(self) -> None:
         # Implementata de tipurile derivate
         pass

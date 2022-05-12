@@ -14,27 +14,30 @@ class Button(RenderedObject):
         height: int,
         text: str = None,
         textColor: pygame.Color = (255, 255, 255),
-        sysFont: str = None,
+        font: str = None,
         fontSize: int = 12,
         bgImagePath: str = None,
-        bgColor: pygame.Color = None,
-        buttonBorderRadius: int = -1
+        bgColor: pygame.Color = None
     ) -> None:
         super().__init__(posX, posY, width, height)
 
         self.font = None
-        if sysFont is not None:
-            self.font = pygame.font.SysFont(sysFont, fontSize)
+        if font is not None:
+            if '.' in font:
+                self.font = pygame.font.Font(font, fontSize)
+            else:
+                self.font = pygame.font.SysFont(font, fontSize)
         
         self.text = text
         self.textColor = textColor
         self.textSurface = None
         if self.text is not None and self.font is not None:
             self.textSurface = self.font.render(self.text, True, self.textColor)
-            self.textPos = (self._frame.centerx - self.textSurface.get_width() / 2, self._frame.centery - self.textSurface.get_height() / 2)
         
-        self.bgColor = bgColor
-        self.borderRadius = buttonBorderRadius
+        self.bgColor = None
+        if bgColor is not None:
+            self.bgColor = pygame.Surface(self._frame.size)
+            self.bgColor.fill(bgColor)
         self.bgImage = None
         if bgImagePath is not None:
             self.bgImage = pygame.image.load(bgImagePath)
@@ -42,16 +45,8 @@ class Button(RenderedObject):
     
     def ChangeSize(self, width: int, height: int) -> None:
         super().ChangeSize(width, height)
-        if self.textSurface is not None:
-            self.textPos = (self._frame.centerx - self.textSurface.get_width() / 2, self._frame.centery - self.textSurface.get_height() / 2)
         if self.bgImage is not None:
             self.bgImage = self.bgImage = pygame.transform.scale(self.bgImage, self._frame.size)
-
-
-    def ChangeRelativePos(self, position: pygame.math.Vector2) -> None:
-        super().ChangeRelativePos(position)
-        if self.textSurface is not None:
-            self.textPos = (self._frame.centerx - self.textSurface.get_width() / 2, self._frame.centery - self.textSurface.get_height() / 2)
 
 
     def SetText(self, text: str, textColor: pygame.Color = (255, 255, 255)) -> None:
@@ -59,21 +54,16 @@ class Button(RenderedObject):
         self.textColor = textColor
         if self.font is not None:
             self.textSurface = self.textSurface = self.font.render(text, True, textColor)
-            self.textPos = (self._frame.centerx - self.textSurface.get_width() / 2, self._frame.centery - self.textSurface.get_height() / 2)
 
 
-    def SetSysFont(self, font: str, fontSize: int) -> None:
-        self.font = pygame.font.SysFont(font, fontSize)
+    def SetFont(self, font: str, fontSize: int) -> None:
+        if '.' in font:
+            self.font = pygame.font.Font(font, fontSize)
+        else:
+            self.font = pygame.font.SysFont(font, fontSize) 
+        
         if self.text is not None:
             self.textSurface = self.textSurface = self.font.render(self.text, True, self.textColor)
-            self.textPos = (self._frame.centerx - self.textSurface.get_width() / 2, self._frame.centery - self.textSurface.get_height() / 2)
-
-
-    def SetCustomFont(self, fontPath: str, fontSize: int) -> None:
-        self.font = pygame.font.Font(fontPath, fontSize)
-        if self.text is not None:
-            self.textSurface = self.textSurface = self.font.render(self.text, True, self.textColor)
-            self.textPos = (self._frame.centerx - self.textSurface.get_width() / 2, self._frame.centery - self.textSurface.get_height() / 2)
 
 
     def SetBgImage(self, imagePath: str) -> None:
@@ -82,8 +72,18 @@ class Button(RenderedObject):
 
     
     def SetBgColor(self, color: pygame.Color, buttonBorderRadius: int = -1) -> None:
-        self.bgColor = color
-        self.borderRadius = buttonBorderRadius
+        if self.bgColor is None:
+            self.bgColor = pygame.Surface(self._frame.size)
+        self.bgColor.fill(color)
+
+
+    def SetAlphaLevel(self, alpha: int) -> None:
+        if self.bgImage is not None:
+            self.bgImage.set_alpha(alpha)
+        if self.bgColor is not None:
+            self.bgColor.set_alpha(alpha)
+        if self.textSurface is not None:
+            self.textSurface.set_alpha(alpha)
 
 
     def CollidesWithPoint(self, point: Tuple[int, int]) -> bool:
@@ -96,7 +96,8 @@ class Button(RenderedObject):
         if self.bgImage is not None:
             display.blit(self.bgImage, self._frame.topleft)
         elif self.bgColor is not None:
-            pygame.draw.rect(display, self.bgColor, self._frame, 0, self.borderRadius)
+            display.blit(self.bgColor, self._frame.topleft)
         
         if self.textSurface is not None:
-            display.blit(self.textSurface, self.textPos)
+            textPos = (self._frame.centerx - self.textSurface.get_width() / 2, self._frame.centery - self.textSurface.get_height() / 2)
+            display.blit(self.textSurface, textPos)

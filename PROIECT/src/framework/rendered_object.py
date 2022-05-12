@@ -34,6 +34,11 @@ class RenderedObject:
             childObject.MoveBy(moveAmount)
 
 
+    def SetAlphaLevel(self, alpha: int) -> None:
+        # Implementata de tipurile derivate
+        pass
+
+
     def ChangeRelativePos(self, position: pygame.math.Vector2) -> None:
         self.MoveBy(position - self._relativePos)
 

@@ -35,10 +35,15 @@ class Animation(RenderedObject):
     def ResetAnimation(self) -> None:
         self.frameIndex = 0
         self.timeSinceChange = 0
-    
+
 
     def ChangeTransitionTime(self, transitionTime: float) -> None:
         self.timeBetweenFrames = transitionTime
+
+
+    def SetAlphaLevel(self, alpha: int) -> None:
+        for tex in self.frames:
+            tex.set_alpha(alpha)
 
 
     def ChangeSize(self, width: int, height: int) -> None:

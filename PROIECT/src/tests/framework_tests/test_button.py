@@ -19,15 +19,10 @@ class TestButton(unittest.TestCase):
 
     
     def test_SizeChanging(self):
-        button = Button(0, 0, 20, 20, 'TEST', (5, 5, 5), 'Consolas', 12)
+        bgImg = RES_DIR + 'walk1.bmp'
+        button = Button(0, 0, 20, 20, 'TEST', (5, 5, 5), 'Consolas', 12, bgImg)
         button.ChangeSize(18, 99)
-        self.assertEqual(button.textPos, (9 - button.textSurface.get_rect().width / 2, 49 - button.textSurface.get_rect().height / 2))
-    
-
-    def test_RelativePosChanging(self):
-        button = Button(0, 0, 20, 20, 'TEST', (5, 5, 5), 'Consolas', 12)
-        button.ChangeRelativePos((50, 100))
-        self.assertEqual(button.textPos, (50 + 20 / 2 - button.textSurface.get_rect().width / 2, 100 + 20 / 2 - button.textSurface.get_rect().height / 2))
+        self.assertEqual(button.bgImage.get_rect().size, (18, 99))
 
 
     def test_DrawBgImage(self):
