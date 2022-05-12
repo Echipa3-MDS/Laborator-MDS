@@ -1,3 +1,4 @@
+from tkinter import N
 import pygame
 
 from framework.rendered_object import RenderedObject
@@ -26,11 +27,12 @@ class TextObject(RenderedObject):
         self._frame.height = self.textSurface.get_height()
     
 
-    def ChangeText(self, text: str) -> None:
-        if self.text == text:
+    def ChangeText(self, text: str, textColor: pygame.Color = (255, 255, 255)) -> None:
+        if self.text == text and self.textColor == textColor:
             return
         self.text = text
-        self.textSurface = self.font.render(text, True, self.textColor)
+        self.textColor = textColor
+        self.textSurface = self.font.render(self.text, True, self.textColor)
 
 
     def _Draw(self) -> None:
