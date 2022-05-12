@@ -32,8 +32,10 @@ class FirstSceneExample(Scene):
 
         self.playerAnim = Animation(playerX, playerY, playerWidth, playerHeight, playerTextures, frameTime)
         self.AttachObject(self.playerAnim)
-        self.playerAnim.PlayAnimation()
 
+
+    def OnSceneEnter(self) -> None:
+        self.playerAnim.PlayAnimation()
         UpdateScheduler.GetInstance().ScheduleUpdate(self.update)
         EventsManager.GetInstance().AddListener(pygame.KEYDOWN, self.OnKeyDown)
 

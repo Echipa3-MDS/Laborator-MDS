@@ -25,6 +25,11 @@ class Scene(RenderedObject):
         self.bgColor = color
 
 
+    def OnSceneEnter(self) -> None:
+        # Implementata de tipurile derivate
+        pass
+
+
     def OnSceneExit(self) -> None:
         # Implementata de tipurile derivate
         pass
