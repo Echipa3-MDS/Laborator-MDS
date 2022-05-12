@@ -70,34 +70,37 @@ class Meniu(Scene):
         posX = DISPLAY_WIDTH / 2 - buttonWidth / 2
         posY = 200
 
-        textColor = (0, 255, 0)
+        textColor = (255, 255, 255)
         font = 'arial'
         fontSize = 40
-        bgColor = (255, 0, 0)
+        bgColor = (0, 0, 0)
         bgImage = None
         borderRadius = 5
         buttonTop = 20
+        alpha = 200
         
 
+        self.butonStart = Button(posX, posY, buttonWidth, buttonHeight, 'Start', textColor, font, fontSize, bgImage, bgColor)
+        self.butonHighScores = Button(posX, posY + buttonHeight + buttonTop, buttonWidth, buttonHeight, 'High Scores', textColor, font, fontSize, bgImage, bgColor)
+        self.butonExit = Button(posX, posY + 2 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Exit', textColor, font, fontSize, bgImage, bgColor)
         
-        self.butonStart = Button(posX, posY, buttonWidth, buttonHeight, 'Start', textColor, font, fontSize, bgColor, bgImage, borderRadius)
-        self.butonHighScores = Button(posX, posY + buttonHeight + buttonTop, buttonWidth, buttonHeight, 'High Scores', textColor, font, fontSize, bgColor, bgImage, borderRadius)
-        self.butonExit = Button(posX, posY + 2 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Exit', textColor, font, fontSize, bgColor, bgImage, borderRadius)
-        
+        self.butonStart.SetAlphaLevel(alpha)
+        self.butonHighScores.SetAlphaLevel(alpha)
+        self.butonExit.SetAlphaLevel(alpha)
         
         hsWidth = 500
         hsHeight = 400
         hsX = DISPLAY_WIDTH / 2 - hsWidth / 2
         hsY = DISPLAY_HEIGHT / 2 - hsHeight / 2
 
-        culoareHighScoreBox = (255,255,0)
-        self.scoreBoard = Box(hsX, hsY, hsWidth, hsHeight, culoareHighScoreBox)
+        self.scoreBoard = Box(hsX, hsY, hsWidth, hsHeight, (42, 47, 46))
         
         hsExitWidth = 50
         hsExitHeight = 50
         hsExitX = hsWidth - hsExitWidth
         hsExitY = 0
-        self.hsExitButton = Button(hsExitX, hsExitY, hsExitWidth, hsExitHeight, 'X', (0, 0, 0), 'arial', 50, (0, 0, 255))
+        self.hsExitButton = Button(hsExitX, hsExitY, hsExitWidth, hsExitHeight, 'X', textColor, font, 50, None, bgColor)
+        self.hsExitButton.SetAlphaLevel(alpha)
         self.scoreBoard.AttachObject(self.hsExitButton)
 
         highScore = HighScores.GetInstance()
@@ -131,8 +134,6 @@ class Meniu(Scene):
 
         EventsManager.GetInstance().AddListener(pygame.MOUSEBUTTONDOWN, self.OnMouseDown)
 
-        # box = pygame.Rect(0, 0, 60, 70)
-        # pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), box, 0)
 
     def OnMouseDown(self, event: pygame.event.Event) -> None:
         
@@ -167,10 +168,3 @@ class Meniu(Scene):
                     self.AttachObject(self.butonExit)
                     self.DetachObject(self.scoreBoard)
                     self.scoreBoardActive = False
-
-
-
-
-
-
-
