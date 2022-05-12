@@ -5,7 +5,8 @@ from .events_manager import EventsManager
 from .update_scheduler import UpdateScheduler
 from .scene import Scene
 
-from game.first_scene_example import FirstSceneExample
+# from game.first_scene_example import FirstSceneExample
+from game.meniu import Meniu
 
 
 class App:
@@ -36,7 +37,8 @@ class App:
         pygame.display.set_caption("Proiect MDS")
 
         # Prima scena rulata de aplicatie
-        firstScene = FirstSceneExample()
+        # firstScene = FirstSceneExample()
+        firstScene = Meniu()
 
         # Scena afisata de aplicatie
         self.currentScene = firstScene

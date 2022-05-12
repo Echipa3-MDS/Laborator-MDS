@@ -1,0 +1,4 @@
+Jucator3 1600
+Jucator2 817
+Jucator1 732
+Jucator4 401
