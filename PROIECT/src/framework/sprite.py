@@ -17,6 +17,10 @@ class Sprite(RenderedObject):
         self.texture = pygame.transform.scale(image, (width, height))
     
 
+    def SetAlphaLevel(self, alpha: int) -> None:
+        self.texture.set_alpha(alpha)
+
+
     def ChangeSize(self, width: int, height: int) -> None:
         super().ChangeSize(width, height)
         self.texture = pygame.transform.scale(self.texture, (width, height))

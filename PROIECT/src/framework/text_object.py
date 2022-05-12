@@ -10,7 +10,7 @@ class TextObject(RenderedObject):
         self,
         text: str,
         textColor: pygame.Color,
-        sysFont: pygame.font.Font,
+        font: str,
         fontSize: int, 
         posX: int, 
         posY: int,
@@ -19,8 +19,10 @@ class TextObject(RenderedObject):
 
         self.text = text
         self.textColor = textColor
-        
-        self.font = pygame.font.SysFont(sysFont, fontSize)
+        if '.' in font:
+            self.font = pygame.font.Font(font, fontSize)
+        else:
+            self.font = pygame.font.SysFont(font, fontSize)
         self.textSurface = self.font.render(text, True, textColor)
 
         self._frame.width = self.textSurface.get_width()
@@ -33,6 +35,10 @@ class TextObject(RenderedObject):
         self.text = text
         self.textColor = textColor
         self.textSurface = self.font.render(self.text, True, self.textColor)
+
+
+    def SetAlphaLevel(self, alpha: int) -> None:
+        self.textSurface.set_alpha(alpha)
 
 
     def _Draw(self) -> None:
