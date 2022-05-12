@@ -32,7 +32,7 @@ class TestButton(unittest.TestCase):
 
     def test_DrawBgImage(self):
         img = RES_DIR + 'walk1.bmp'
-        button = Button(0, 0, 50, 50, 'TEST', (0, 0, 0), 'Consolas', 12, None, img)
+        button = Button(0, 0, 50, 50, 'TEST', (0, 0, 0), 'Consolas', 12, img)
 
         display = pygame.display.set_mode((800, 600))
         oldPixelBuffer = display.get_view().raw
@@ -43,10 +43,16 @@ class TestButton(unittest.TestCase):
 
     def test_DrawBgColor(self):
         bgColor = (120, 120, 120)
-        button = Button(0, 0, 50, 50, 'TEST', (0, 0, 0), 'Consolas', 12, bgColor)
+        button = Button(0, 0, 50, 50, 'TEST', (0, 0, 0), 'Consolas', 12, None, bgColor)
 
         display = pygame.display.set_mode((800, 600))
         oldPixelBuffer = display.get_view().raw
         button._Draw()
         newPixelBuffer = display.get_view().raw
         self.assertNotEqual(oldPixelBuffer, newPixelBuffer)
+
+
+    def test_CollidesWithPoint(self):
+        button = Button(0, 0, 150, 150)
+        point = (100, 50)
+        self.assertTrue(button.CollidesWithPoint(point))
