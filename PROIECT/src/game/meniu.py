@@ -15,13 +15,47 @@ from game.first_scene_example import FirstSceneExample
 from game.high_scores import HighScores
 import framework.app as app
 
-
-# from framework.app import App
-
-
-class Meniu(Scene):
+class Meniu(Scene):    
     def __init__(self) -> None:
         super().__init__()
+
+        class Box(RenderedObject):
+            def __init__(
+                self,
+                posX: int, 
+                posY: int, 
+                width: int, 
+                height: int,
+                bgColor: pygame.Color = None,
+                bgImage: str = None,
+                borderRadius: int = -1 
+            ) -> None:
+                super().__init__(posX, posY, width, height)
+
+                self.bgColor = bgColor
+                self.borderRadius = borderRadius
+                self.bgImage = None
+                if bgImage is not None:
+                    image = pygame.image.load(bgImage)
+                    self.bgImage = pygame.transform.scale(image, self._frame.size)
+
+
+            def ChangeSize(self, width: int, height: int) -> None:
+                super().ChangeSize(width, height)
+
+
+            def ChangeRelativePos(self, position: pygame.math.Vector2) -> None:
+                super().ChangeRelativePos(position)
+
+
+            def _Draw(self) -> None:
+                display = pygame.display.get_surface()
+                if self.bgImage is not None:
+                    display.blit(self.bgImage, self._frame.topleft)
+                elif self.bgColor is not None:
+                    pygame.draw.rect(display, self.bgColor, self._frame, 0, self.borderRadius)
+
+        
 
         logoImg = pygame.image.load(RES_DIR + "logo.png")
         logoWidth = 400
@@ -42,53 +76,98 @@ class Meniu(Scene):
         bgColor = (255, 0, 0)
         bgImage = None
         borderRadius = 5
-
+        buttonTop = 20
         
 
         
         self.butonStart = Button(posX, posY, buttonWidth, buttonHeight, 'Start', textColor, font, fontSize, bgColor, bgImage, borderRadius)
-        self.butonHighScores = Button(posX, posY + buttonHeight + 20, buttonWidth, buttonHeight, 'High Scores', textColor, font, fontSize, bgColor, bgImage, borderRadius)
-        self.butonExit = Button(posX, posY + 2 * (buttonHeight + 20), buttonWidth, buttonHeight, 'Exit', textColor, font, fontSize, bgColor, bgImage, borderRadius)
+        self.butonHighScores = Button(posX, posY + buttonHeight + buttonTop, buttonWidth, buttonHeight, 'High Scores', textColor, font, fontSize, bgColor, bgImage, borderRadius)
+        self.butonExit = Button(posX, posY + 2 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Exit', textColor, font, fontSize, bgColor, bgImage, borderRadius)
         
-        highScore = HighScores.GetInstance()
-        textHighScore = highScore.GetHighScoreString(10)
-
-        print(textHighScore.split('\n'))
         
-        hsWidth = 100
+        hsWidth = 500
         hsHeight = 400
         hsX = DISPLAY_WIDTH / 2 - hsWidth / 2
         hsY = DISPLAY_HEIGHT / 2 - hsHeight / 2
 
-        self.highScoreBox = RenderedObject(hsX, hsY, hsWidth, hsHeight)
+        culoareHighScoreBox = (255,255,0)
+        self.scoreBoard = Box(hsX, hsY, hsWidth, hsHeight, culoareHighScoreBox)
+        
+        hsExitWidth = 50
+        hsExitHeight = 50
+        hsExitX = hsWidth - hsExitWidth
+        hsExitY = 0
+        self.hsExitButton = Button(hsExitX, hsExitY, hsExitWidth, hsExitHeight, 'X', (0, 0, 0), 'arial', 50, (0, 0, 255))
+        self.scoreBoard.AttachObject(self.hsExitButton)
+
+        highScore = HighScores.GetInstance()
+        textHighScore = highScore.GetHighScoreString(10)
+        liniHighScore = textHighScore.strip().split('\n')
+        liniHighScore[-1] += ' '
+
+        hsTop = 10
+        hsFontSize = 20
+        
+        for it, linie in enumerate(liniHighScore):
+            fontT = pygame.font.SysFont(font, hsFontSize)
+            textSurface = fontT.render(linie, True, textColor)
+            textWidth = textSurface.get_width()
+            textHeight = textSurface.get_height()
+
+            linieY = hsTop + textHeight
+            linieX = hsWidth / 2 - textWidth / 2
+
+            textHSObject = TextObject(linie, textColor, font, hsFontSize, linieX, it * (linieY))
+            self.scoreBoard.AttachObject(textHSObject)
 
 
-        # self.scoreBoard = TextObject(textBoard, textColor, font, 20, hsX, hsY)
+        self.AttachObject(self.logo)
+        self.AttachObject(self.butonStart)
+        self.AttachObject(self.butonHighScores)
+        self.AttachObject(self.butonExit)
 
-        # self.AttachObject(self.logo)
-        # self.AttachObject(self.butonStart)
-        # self.AttachObject(self.butonHighScores)
-        # self.AttachObject(self.butonExit)
+        self.scoreBoardActive = False
         # self.AttachObject(self.scoreBoard)
 
         EventsManager.GetInstance().AddListener(pygame.MOUSEBUTTONDOWN, self.OnMouseDown)
 
-        box = pygame.Rect(0, 0, 60, 70)
-        pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), box, 0)
+        # box = pygame.Rect(0, 0, 60, 70)
+        # pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), box, 0)
 
     def OnMouseDown(self, event: pygame.event.Event) -> None:
+        
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            butonStart = self.butonStart.GetRect()
-            if butonStart.collidepoint(pos):
-                gameScene = FirstSceneExample()
-                appObj = app.App.GetInstance()
-                appObj.PlayNewScene(gameScene)
-            
-            butonExit = self.butonExit.GetRect()
-            if butonExit.collidepoint(pos):
-                quitEvent = pygame.event.Event(pygame.QUIT)
-                pygame.event.post(quitEvent)
+            if not self.scoreBoardActive:
+                butonStart = self.butonStart.GetRect()
+                if butonStart.collidepoint(pos):
+                    gameScene = FirstSceneExample()
+                    appObj = app.App.GetInstance()
+                    appObj.PlayNewScene(gameScene)
+                
+                butonExit = self.butonExit.GetRect()
+                if butonExit.collidepoint(pos):
+                    quitEvent = pygame.event.Event(pygame.QUIT)
+                    pygame.event.post(quitEvent)
+                
+                butonHighScore = self.butonHighScores.GetRect()
+                if butonHighScore.collidepoint(pos):
+                    self.DetachObject(self.logo)
+                    self.DetachObject(self.butonStart)
+                    self.DetachObject(self.butonHighScores)
+                    self.DetachObject(self.butonExit)
+                    self.AttachObject(self.scoreBoard)
+                    self.scoreBoardActive = True
+            else:
+                butonExitHs = self.hsExitButton.GetRect()
+                if butonExitHs.collidepoint(pos):
+                    self.AttachObject(self.logo)
+                    self.AttachObject(self.butonStart)
+                    self.AttachObject(self.butonHighScores)
+                    self.AttachObject(self.butonExit)
+                    self.DetachObject(self.scoreBoard)
+                    self.scoreBoardActive = False
+
 
 
 
