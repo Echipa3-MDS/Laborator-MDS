@@ -52,9 +52,12 @@ class App:
         self.eventManager.ClearListeners()
         self.updateScheduler.ClearSchedule()
         self.currentScene = scene
+        self.currentScene.OnSceneEnter()
 
 
     def Run(self) -> None:
+        self.currentScene.OnSceneEnter()
+        
         isRunning = True
         while isRunning:
             self.updateScheduler.CalculateDeltaTime()
