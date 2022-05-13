@@ -1,0 +1,17 @@
+Jucator1 1600
+Jucator2 817
+Jucator3 732
+Jucator4 401
+Jucator5 471
+Jucator6 158
+Jucator7 671
+Jucator8 1919
+Jucator9 823
+Jucator10 2000
+Jucator11 754
+Jucator12 694
+Jucator13 177
+Jucator14 583
+Jucator15 682
+Jucator16 992
+
