@@ -39,15 +39,6 @@ class Meniu(Scene):
                     image = pygame.image.load(bgImage)
                     self.bgImage = pygame.transform.scale(image, self._frame.size)
 
-
-            def ChangeSize(self, width: int, height: int) -> None:
-                super().ChangeSize(width, height)
-
-
-            def ChangeRelativePos(self, position: pygame.math.Vector2) -> None:
-                super().ChangeRelativePos(position)
-
-
             def _Draw(self) -> None:
                 display = pygame.display.get_surface()
                 if self.bgImage is not None:
