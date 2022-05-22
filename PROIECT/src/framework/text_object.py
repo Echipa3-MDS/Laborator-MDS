@@ -35,6 +35,8 @@ class TextObject(RenderedObject):
         self.text = text
         self.textColor = textColor
         self.textSurface = self.font.render(self.text, True, self.textColor)
+        self._frame.width = self.textSurface.get_width()
+        self._frame.height = self.textSurface.get_height()
 
 
     def SetAlphaLevel(self, alpha: int) -> None:

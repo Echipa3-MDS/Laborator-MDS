@@ -12,19 +12,20 @@ class TestApp(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print('\nTesting App Class...\n')
-
-    def setUp(self):
-        if App.__dict__['_App__instance'] is not None:
-            App.__dict__['_App__instance'].__init__()
     
 
     def test_GetInstance(self):
-        self.assertIsInstance(App.GetInstance(), App)
+        pygame.init()
+        instance = App.GetInstance()
+        pygame.quit()
+        self.assertIsInstance(instance, App)
     
 
     def test_Singleton(self):
+        pygame.init()
         app1 = App.GetInstance()
         app2 = App.GetInstance()
+        pygame.quit()
         self.assertEqual(id(app1), id(app2))
 
 
@@ -40,11 +41,13 @@ class TestApp(unittest.TestCase):
 
     
     def test_PlayNewScene(self):
-        App.Init()
+        pygame.init()
+        if App.__dict__['_App__instance'] is not None:
+            App.__dict__['_App__instance'].__init__()
         app = App.GetInstance()
         scene = Scene()
         app.PlayNewScene(scene)
-        App.Quit()
+        pygame.quit()
         self.assertEqual(id(app.currentScene), id(scene))
     
 
@@ -71,8 +74,12 @@ class TestApp(unittest.TestCase):
         pygame.event.post(pygame.event.Event(pygame.USEREVENT))
         pygame.event.post(pygame.event.Event(pygame.USEREVENT))
         pygame.event.post(pygame.event.Event(pygame.QUIT))
+
+        if App.__dict__['_App__instance'] is not None:
+            App.__dict__['_App__instance'].__init__()
         App.GetInstance().currentScene = scene
         App.GetInstance().Run()
+        
         ranFrames = min(scene.numberOfUpdates, scene.numberOfEvents)
         
         App.Quit()
