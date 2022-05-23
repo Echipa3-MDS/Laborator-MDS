@@ -123,6 +123,10 @@ class Meniu(Scene):
         self.scoreBoardActive = False
         # self.AttachObject(self.scoreBoard)
 
+        
+    
+    def OnSceneEnter(self) -> None:
+        super().OnSceneEnter()
         EventsManager.GetInstance().AddListener(pygame.MOUSEBUTTONDOWN, self.OnMouseDown)
 
 
