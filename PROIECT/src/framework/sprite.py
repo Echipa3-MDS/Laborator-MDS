@@ -25,5 +25,14 @@ class Sprite(RenderedObject):
         super().ChangeSize(width, height)
         self.texture = pygame.transform.scale(self.texture, (width, height))
 
+
+    def Rotate(self, angle: float) -> 'Sprite':
+        rotated = pygame.transform.rotate(self.texture, angle)
+        newSprite = Sprite(rotated, 0, 0, rotated.get_width(), rotated.get_height())
+        distanceToOldCenter = (self._frame.center[0] - newSprite._frame.center[0], self._frame.center[1] - newSprite._frame.center[1])
+        newSprite.ChangeRelativePos(distanceToOldCenter)
+        return newSprite
+
+
     def _Draw(self) -> None:
         pygame.display.get_surface().blit(self.texture, self._frame.topleft)

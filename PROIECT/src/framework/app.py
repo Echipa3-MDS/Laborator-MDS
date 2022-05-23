@@ -5,7 +5,6 @@ from .events_manager import EventsManager
 from .update_scheduler import UpdateScheduler
 from .scene import Scene
 
-# from game.first_scene_example import FirstSceneExample
 from game.meniu import Meniu
 
 
@@ -33,11 +32,10 @@ class App:
 
     def __init__(self) -> None:
         # Fereastra aplicatiei
-        self.display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
+        self.display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.SCALED)  # pygame.SCALED - problema cu miscarea lina a bg
         pygame.display.set_caption("Proiect MDS")
 
         # Prima scena rulata de aplicatie
-        # firstScene = FirstSceneExample()
         firstScene = Meniu()
 
         # Scena afisata de aplicatie

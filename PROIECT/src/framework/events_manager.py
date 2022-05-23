@@ -32,10 +32,14 @@ class EventsManager:
 
 
     def ProcessEvents(self) -> bool:
+        listeners = dict()
+        for k,v in self.eventListeners.items():
+            listeners[k] = v.copy()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-            if event.type in self.eventListeners:
-                for callable in self.eventListeners[event.type]:
+            if event.type in listeners:
+                for callable in listeners[event.type]:
                     callable(event)
         return True

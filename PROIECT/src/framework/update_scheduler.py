@@ -32,7 +32,8 @@ class UpdateScheduler:
     
 
     def UpdateAll(self) -> None:
-        for callable in self.updatesScheduled:
+        updates = self.updatesScheduled.copy()
+        for callable in updates:
             callable(self.deltaTime)
 
 

@@ -11,7 +11,7 @@ from framework.sprite import Sprite
 from framework.rendered_object import RenderedObject
 from framework.text_object import TextObject
 
-from game.first_scene_example import FirstSceneExample
+from game.game_session import GameSession
 from game.high_scores import HighScores
 import framework.app as app
 
@@ -133,7 +133,7 @@ class Meniu(Scene):
             if not self.scoreBoardActive:
                 butonStart = self.butonStart.GetRect()
                 if butonStart.collidepoint(pos):
-                    gameScene = FirstSceneExample()
+                    gameScene = GameSession()
                     appObj = app.App.GetInstance()
                     appObj.PlayNewScene(gameScene)
                 
