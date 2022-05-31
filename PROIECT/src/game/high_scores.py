@@ -40,10 +40,10 @@ class HighScores:
             else:
                 break
 
-        maxLenPlayer = max(maxLenPlayer, len('Username'))
+        maxLenPlayer = max(maxLenPlayer, len('Jucator'))
         maxLenScore = max(maxLenScore, len('Scor'))
         row = ("{juc:<" + str(maxLenPlayer) + "s}: {scor:<" + str(maxLenScore) + "s}\n").format
-        sir = row(juc='Username', scor='Scor')
+        sir = row(juc='Jucator', scor='Scor')
         sir += ('-' * (maxLenPlayer + maxLenScore + 2)) + '\n'
 
         for it, player in enumerate(dictList):
@@ -66,10 +66,12 @@ class HighScores:
 
     def Update(self, highScore : dict) -> None:
         self.highScore = highScore
+        self.highScore = dict(sorted(self.highScore.items(), key=lambda item: -item[1]))
     
     def Save(self) -> None:
         self.SaveScoreDict(self.highScore)
     
     def UpdateAndSave(self, highScore : dict) -> None:
         self.highScore = highScore
+        self.highScore = dict(sorted(self.highScore.items(), key=lambda item: -item[1]))
         self.Save()

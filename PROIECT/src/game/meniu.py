@@ -43,8 +43,8 @@ class Meniu(Scene):
         
 
         self.butonStart = Button(posX, posY, buttonWidth, buttonHeight, 'Start', textColor, font, fontSize, bgImage, bgColor)
-        self.butonHighScores = Button(posX, posY + buttonHeight + buttonTop, buttonWidth, buttonHeight, 'High Scores', textColor, font, fontSize, bgImage, bgColor)
-        self.butonExit = Button(posX, posY + 2 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Exit', textColor, font, fontSize, bgImage, bgColor)
+        self.butonHighScores = Button(posX, posY + buttonHeight + buttonTop, buttonWidth, buttonHeight, 'Top Scoruri', textColor, font, fontSize, bgImage, bgColor)
+        self.butonExit = Button(posX, posY + 2 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Iesire', textColor, font, fontSize, bgImage, bgColor)
         
         self.butonStart.SetAlphaLevel(alpha)
         self.butonHighScores.SetAlphaLevel(alpha)
