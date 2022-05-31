@@ -17,6 +17,7 @@ from game.obstacles.laser_rocket_wave import LaserRocketWave
 from game.obstacles.ray_wave import RayWave
 
 import game.meniu as gm
+import game.game_over as gover
 
 
 class GameSession(Scene):
@@ -351,4 +352,4 @@ class GameSession(Scene):
     def OnButtonQuit(self, event: pygame.event.Event) -> None:
         if self.buttonQuit.CollidesWithPoint(event.pos):
             self.score += self.collectedCoins
-            app.App.GetInstance().PlayNewScene(gm.Meniu())
+            app.App.GetInstance().PlayNewScene(gover.GameOver(self.score, self.gameLayer))
