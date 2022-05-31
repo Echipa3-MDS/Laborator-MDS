@@ -1,52 +1,23 @@
 import pygame
 
 from framework.scene import Scene
-from framework.animation import Animation
 from framework.constants import *
-from framework.update_scheduler import UpdateScheduler
 from framework.events_manager import EventsManager
 
 from framework.button import Button
 from framework.sprite import Sprite
-from framework.rendered_object import RenderedObject
 from framework.text_object import TextObject
 
 from game.game_session import GameSession
 from game.high_scores import HighScores
 import framework.app as app
 
+from framework.box import Box
+
+
 class Meniu(Scene):    
     def __init__(self) -> None:
-        super().__init__()
-
-        class Box(RenderedObject):
-            def __init__(
-                self,
-                posX: int, 
-                posY: int, 
-                width: int, 
-                height: int,
-                bgColor: pygame.Color = None,
-                bgImage: str = None,
-                borderRadius: int = -1 
-            ) -> None:
-                super().__init__(posX, posY, width, height)
-
-                self.bgColor = bgColor
-                self.borderRadius = borderRadius
-                self.bgImage = None
-                if bgImage is not None:
-                    image = pygame.image.load(bgImage)
-                    self.bgImage = pygame.transform.scale(image, self._frame.size)
-
-            def _Draw(self) -> None:
-                display = pygame.display.get_surface()
-                if self.bgImage is not None:
-                    display.blit(self.bgImage, self._frame.topleft)
-                elif self.bgColor is not None:
-                    pygame.draw.rect(display, self.bgColor, self._frame, 0, self.borderRadius)
-
-        
+        super().__init__()    
 
         logoImg = pygame.image.load(RES_DIR + "logo.png")
         logoWidth = 400
