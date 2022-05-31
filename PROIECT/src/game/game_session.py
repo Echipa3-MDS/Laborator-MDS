@@ -230,6 +230,7 @@ class GameSession(Scene):
         else:
             scheduler = UpdateScheduler.GetInstance()
             scheduler.UnscheduleUpdate(self.UpdatePlayerDead)
+            
             if self.playerLives > 0:
                 self.__RevivePlayer()
             else:
@@ -237,6 +238,8 @@ class GameSession(Scene):
                 scheduler.UnscheduleUpdate(self.UpdateBackground)
                 scheduler.UnscheduleUpdate(self.UpdateScore)
                 scheduler.ScheduleUpdate(self.UpdateSecondChance)
+
+                self.copieDisplay = pygame.display.get_surface().copy()
 
                 self.darkBg.AttachObject(self.infoLayer)
                 self.DetachObject(self.infoLayer)
@@ -352,4 +355,4 @@ class GameSession(Scene):
     def OnButtonQuit(self, event: pygame.event.Event) -> None:
         if self.buttonQuit.CollidesWithPoint(event.pos):
             self.score += self.collectedCoins
-            app.App.GetInstance().PlayNewScene(gover.GameOver(self.score, self.gameLayer))
+            app.App.GetInstance().PlayNewScene(gover.GameOver(self.score, self.copieDisplay))

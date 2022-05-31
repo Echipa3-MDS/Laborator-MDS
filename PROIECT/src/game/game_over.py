@@ -16,12 +16,14 @@ from framework.box import Box
 import game.meniu as gm
 
 class GameOver(Scene):
-    def __init__(self, scor : int, objToAttach : 'RenderedObject') -> None:
+    def __init__(self, scor : int, objImgBg : pygame.surface.Surface = None) -> None:
         super().__init__()
 
         self.scor = int(scor)
 
-        self.AttachObject(objToAttach)
+        if objImgBg != None:
+            self.bgPreviousScene = Sprite(objImgBg, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT)
+            self.AttachObject(self.bgPreviousScene)
 
         self.darkOverlay = Box(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, (0, 0, 0))
         self.darkOverlay.SetAlphaLevel(100)
