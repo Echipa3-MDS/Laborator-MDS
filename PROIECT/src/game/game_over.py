@@ -21,9 +21,7 @@ class GameOver(Scene):
 
         self.scor = int(scor)
 
-        if objImgBg != None:
-            self.bgPreviousScene = Sprite(objImgBg, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT)
-            self.AttachObject(self.bgPreviousScene)
+        self.ChangeBgImage(objImgBg)
 
         self.darkOverlay = Box(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, (0, 0, 0))
         self.darkOverlay.SetAlphaLevel(100)
