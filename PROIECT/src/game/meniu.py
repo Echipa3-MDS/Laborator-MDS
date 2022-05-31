@@ -111,8 +111,6 @@ class Meniu(Scene):
                     gameScene = GameSession()
                     appObj = app.App.GetInstance()
                     appObj.PlayNewScene(gameScene)
-
-                    # gameOver = GameOver(100, pygame.display.get_surface())
                 
                 butonExit = self.butonExit.GetRect()
                 if butonExit.collidepoint(pos):
