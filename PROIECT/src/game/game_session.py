@@ -15,8 +15,8 @@ import framework.app as app
 
 from game.obstacles.laser_rocket_wave import LaserRocketWave
 from game.obstacles.ray_wave import RayWave
-
-import game.meniu as gm
+import game.pause_menu as pm
+import game.second_chance as gsc
 import game.game_over as gover
 
 
@@ -101,47 +101,28 @@ class GameSession(Scene):
         self.infoLayer.AttachObject(self.playerLivesText)
         self.infoLayer.AttachObject(heartIcon)
     
-        # Interfata "a doua sansa"
-        self.newLifePrice = 200
-        self.givenTime = 15
-
-        notEnoughMoneyText = f"Nu ai destule monede pentru a cumpara vieti. (min. {self.newLifePrice} monede)"
-        self.notEnoughMoney = TextObject(notEnoughMoneyText, (255, 255, 255), 'Arial', 30, 0, 0)
-        nemRect = self.notEnoughMoney.GetRect()
-        self.notEnoughMoney.ChangeRelativePos((DISPLAY_WIDTH / 2 - nemRect.width / 2, DISPLAY_HEIGHT / 2 - nemRect.height * 2))
-
-        buyQuestionText = f"Cumperi inca o viata? ({self.newLifePrice} monede)"
-        self.buyQuestion = TextObject(buyQuestionText, (255, 255, 255), 'Arial', 30, 0, 0)
-        bqRect = self.buyQuestion.GetRect()
-        self.buyQuestion.ChangeRelativePos((DISPLAY_WIDTH / 2 - bqRect.width / 2, DISPLAY_HEIGHT / 2 - bqRect.height * 2))
-
-        buttonWidth = 150
-        buttonHeight = 50
-        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpara', (0, 0, 0), 'Arial', 26, None, (255, 224, 0))
-        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Iesire', (255, 255, 255), 'Arial', 26, None, (216, 216, 216))
-
-        self.timer = TextObject(str(self.givenTime), (255, 255, 255), 'Arial', 40, 0, 0)
-        timerRect = self.timer.GetRect()
-        self.timer.ChangeRelativePos((DISPLAY_WIDTH / 2 - timerRect.width / 2, DISPLAY_HEIGHT / 2 + self.buttonQuit.GetRect().height + 30))
-
-        darkBgSurface = pygame.Surface((1, 1)).convert_alpha()
-        darkBgSurface.fill((0, 0, 0, 150))
-        self.darkBg = Sprite(darkBgSurface, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT)
-        
-        self.remainingTime = self.givenTime
+        # Buton pauza
+        pIconPath = RES_DIR + 'pause.png'
+        pIconW = 50
+        pIconH = 50
+        pIconX = DISPLAY_WIDTH - pIconW - 10
+        pIconY = 10
+        self.pauseButton = Button(pIconX, pIconY, pIconW, pIconH, bgImagePath=pIconPath)
+        self.infoLayer.AttachObject(self.pauseButton)
 
 
     def OnSceneEnter(self) -> None:
         self.playerWalk.PlayAnimation()
 
         EventsManager.GetInstance().AddListener(pygame.USEREVENT, self.OnWaveEnd)
+        EventsManager.GetInstance().AddListener(pygame.MOUSEBUTTONDOWN, self.OnButtonPause)
 
         scheduler = UpdateScheduler.GetInstance()
         scheduler.ScheduleUpdate(self.UpdateSceneVelocity)
         scheduler.ScheduleUpdate(self.UpdateBackground)
         scheduler.ScheduleUpdate(self.UpdateScore)
         if self.playerState is self.playerDead:
-            scheduler.ScheduleUpdate(self.UpdatePlayerDead)
+            scheduler.ScheduleUpdate(self.UpdatePlayerDying)
         else:
             scheduler.ScheduleUpdate(self.UpdatePlayer)
         if self.obstacleWave is None:
@@ -209,10 +190,10 @@ class GameSession(Scene):
             scheduler = UpdateScheduler.GetInstance()
             scheduler.UnscheduleUpdate(self.UpdateSceneVelocity)
             scheduler.UnscheduleUpdate(self.UpdatePlayer)
-            scheduler.ScheduleUpdate(self.UpdatePlayerDead)
+            scheduler.ScheduleUpdate(self.UpdatePlayerDying)
     
 
-    def UpdatePlayerDead(self, deltaTime: float) -> None:
+    def UpdatePlayerDying(self, deltaTime: float) -> None:
         playerStateRect = self.playerState.GetRect()
         playerRect = pygame.Rect(playerStateRect.x, playerStateRect.y, self.playerWidth, self.playerHeight)
         playerBottom =  playerRect.bottom
@@ -228,48 +209,28 @@ class GameSession(Scene):
             self.sceneXVelocity = min(0, self.sceneXVelocity + self.sceneDeceleration * deltaTime)
             self.__CheckCoinCollision(playerRect)
         else:
+            UpdateScheduler.GetInstance().UnscheduleUpdate(self.UpdatePlayerDying)
+            self.OnPlayerDead()
+
+
+    def OnPlayerDead(self) -> None:
+        if self.playerLives > 0:
+            self.AddLives(-1)
+            self.RevivePlayer()
             scheduler = UpdateScheduler.GetInstance()
-            scheduler.UnscheduleUpdate(self.UpdatePlayerDead)
-            
-            if self.playerLives > 0:
-                self.__RevivePlayer()
-            else:
-                # Initializare interfata "A doua sansa"
-                scheduler.UnscheduleUpdate(self.UpdateBackground)
-                scheduler.UnscheduleUpdate(self.UpdateScore)
-                scheduler.ScheduleUpdate(self.UpdateSecondChance)
-
-                self.copieDisplay = pygame.display.get_surface().copy()
-
-                self.darkBg.AttachObject(self.infoLayer)
-                self.DetachObject(self.infoLayer)
-                self.AttachObject(self.darkBg)
-
-                self.remainingTime = self.givenTime
-                self.timer.ChangeText(str(self.remainingTime))
-                self.infoLayer.AttachObject(self.timer)
-
-                if self.collectedCoins < self.newLifePrice:
-                    self.infoLayer.AttachObject(self.notEnoughMoney)
-                    self.infoLayer.AttachObject(self.buttonQuit)
-                    self.buttonQuit.GetRect().x = DISPLAY_WIDTH / 2 - self.buttonQuit.GetSize()[0] / 2
-                    EventsManager.GetInstance().AddListener(pygame.MOUSEBUTTONDOWN, self.OnButtonQuit)
-                else:
-                    self.infoLayer.AttachObject(self.buyQuestion)
-                    self.infoLayer.AttachObject(self.buttonBuyLife)
-                    self.infoLayer.AttachObject(self.buttonQuit)
-                    EventsManager.GetInstance().AddListener(pygame.MOUSEBUTTONDOWN, self.OnButtonBuy)
-                    EventsManager.GetInstance().AddListener(pygame.MOUSEBUTTONDOWN, self.OnButtonQuit)
-
-
-    def UpdateSecondChance(self, deltaTime: float) -> None:
-        if self.remainingTime > 0:
-            self.remainingTime -= deltaTime
-            self.timer.ChangeText(str(int(self.remainingTime) + 1))
+            scheduler.ScheduleUpdate(self.UpdatePlayer)
+            scheduler.ScheduleUpdate(self.UpdateSceneVelocity)
+            scheduler.ScheduleUpdate(self.WaveTransitionAgent)
+        elif self.collectedCoins >= gsc.SecondChanceInterface.newLifePrice:
+            displayState = pygame.display.get_surface().copy()
+            scInterface = gsc.SecondChanceInterface(self, displayState, int(self.score), self.collectedCoins)
+            app.App.GetInstance().PlayNewScene(scInterface)
         else:
-            self.score += self.collectedCoins
-            app.App.GetInstance().PlayNewScene(gm.Meniu())
-
+            displayState = pygame.display.get_surface().copy()
+            finalScore = int(self.score) + self.collectedCoins
+            gameOverScene = gover.GameOver(finalScore, displayState)
+            app.App.GetInstance().PlayNewScene(gameOverScene)
+    
 
     def WaveTransitionAgent(self, deltaTime: float) -> None:
         self.transTimeElapsed += deltaTime
@@ -296,6 +257,32 @@ class GameSession(Scene):
             UpdateScheduler.GetInstance().ScheduleUpdate(self.WaveTransitionAgent)
 
 
+    def OnButtonPause(self, event: pygame.event.Event) -> None:
+        if self.pauseButton.CollidesWithPoint(event.pos):
+            displayState = pygame.display.get_surface().copy()
+            pauseScene = pm.PauseMenu(self, displayState)
+            app.App.GetInstance().PlayNewScene(pauseScene)
+    
+
+    def AddCoins(self, coins: int) -> None:
+        self.collectedCoins += coins
+        self.coinsText.ChangeText(str(self.collectedCoins))
+    
+
+    def AddLives(self, lives: int) -> None:
+        self.playerLives += lives
+        self.playerLivesText.ChangeText(str(self.playerLives))
+
+
+    def RevivePlayer(self) -> None:
+        self.__ChangePlayerState(self.playerWalk)
+        self.sceneXVelocity = self.sceneVelocityOnDeath
+        if self.obstacleWave is not None:
+            self.obstacleWave.CleanUp()
+            self.obstacleWave = None
+        self.transTimeElapsed = 0
+
+
     def __ChangePlayerState(self, newState: Sprite | Animation) -> None:
         if self.playerState is not newState:
             self.gameLayer.DetachObject(self.playerState)
@@ -308,51 +295,4 @@ class GameSession(Scene):
         if self.obstacleWave is not None and self.obstacleWave.hasCoins:
             collidedCoins = self.obstacleWave.CheckCoinCollision(playerRect)
             if collidedCoins is not None:
-                self.collectedCoins += collidedCoins
-                self.coinsText.ChangeText(str(self.collectedCoins))
-    
-
-    def __RevivePlayer(self) -> None:
-        scheduler = UpdateScheduler.GetInstance()
-
-        self.playerLives -= 1
-        self.playerLivesText.ChangeText(str(self.playerLives))
-        self.__ChangePlayerState(self.playerWalk)
-        scheduler.ScheduleUpdate(self.UpdatePlayer)
-        scheduler.ScheduleUpdate(self.UpdateScore)
-
-        self.sceneXVelocity = self.sceneVelocityOnDeath
-        scheduler.ScheduleUpdate(self.UpdateSceneVelocity)
-        scheduler.ScheduleUpdate(self.UpdateBackground)
-
-        if self.obstacleWave is not None:
-            self.obstacleWave.CleanUp()
-            self.obstacleWave = None
-        self.transTimeElapsed = 0
-        scheduler.ScheduleUpdate(self.WaveTransitionAgent)
-    
-
-    def OnButtonBuy(self, event: pygame.event.Event) -> None:
-        if self.buttonBuyLife.CollidesWithPoint(event.pos):
-            EventsManager.GetInstance().RemoveListener(pygame.MOUSEBUTTONDOWN, self.OnButtonBuy)
-            EventsManager.GetInstance().RemoveListener(pygame.MOUSEBUTTONDOWN, self.OnButtonQuit)
-            UpdateScheduler.GetInstance().UnscheduleUpdate(self.UpdateSecondChance)
-            
-            self.darkBg.DetachObject(self.infoLayer)
-            self.DetachObject(self.darkBg)
-            self.AttachObject(self.infoLayer)
-            self.infoLayer.DetachObject(self.buyQuestion)
-            self.infoLayer.DetachObject(self.buttonBuyLife)
-            self.infoLayer.DetachObject(self.buttonQuit)
-            self.infoLayer.DetachObject(self.timer)
-            
-            self.collectedCoins -= self.newLifePrice
-            self.coinsText.ChangeText(str(self.collectedCoins))
-            self.playerLives += 1
-            self.__RevivePlayer()
-
-
-    def OnButtonQuit(self, event: pygame.event.Event) -> None:
-        if self.buttonQuit.CollidesWithPoint(event.pos):
-            self.score += self.collectedCoins
-            app.App.GetInstance().PlayNewScene(gover.GameOver(self.score, self.copieDisplay))
+                self.AddCoins(collidedCoins)

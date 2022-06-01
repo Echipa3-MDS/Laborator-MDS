@@ -12,23 +12,21 @@ class UpdateScheduler:
     
 
     def __init__(self) -> None:
-        self.updatesScheduled = []
+        self.updatesScheduled = set()
         self.clock = pygame.time.Clock()
         self.deltaTime = 0
     
 
     def ScheduleUpdate(self, callable) -> None:
-        if callable not in self.updatesScheduled:
-            self.updatesScheduled.append(callable)
+        self.updatesScheduled.add(callable)
     
 
     def UnscheduleUpdate(self, callable) -> None:
-        if callable in self.updatesScheduled:
-            self.updatesScheduled.remove(callable)
+        self.updatesScheduled.discard(callable)
     
 
     def ClearSchedule(self) -> None:
-        self.updatesScheduled = []
+        self.updatesScheduled = set()
     
 
     def UpdateAll(self) -> None:

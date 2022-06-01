@@ -40,7 +40,8 @@ class Button(RenderedObject):
             self.bgColor.fill(bgColor)
         self.bgImage = None
         if bgImagePath is not None:
-            self.bgImage = pygame.image.load(bgImagePath)
+            image = pygame.image.load(bgImagePath)
+            self.bgImage = pygame.transform.scale(image, self._frame.size)
 
     
     def ChangeSize(self, width: int, height: int) -> None:
@@ -66,9 +67,14 @@ class Button(RenderedObject):
             self.textSurface = self.textSurface = self.font.render(self.text, True, self.textColor)
 
 
-    def SetBgImage(self, imagePath: str) -> None:
-        image = pygame.image.load(imagePath)
-        self.bgImage = pygame.transform.scale(image, self._frame.size)
+    def SetBgImage(self, image: str | pygame.Surface) -> None:
+        if type(image) is str:
+            imgSurf = pygame.image.load(image)
+            self.bgImage = pygame.transform.scale(imgSurf, self._frame.size)
+        elif image.get_size() != self._frame.size: 
+            self.bgImage = pygame.transform.scale(image, self._frame.size)
+        else:
+            self.bgImage = image
 
     
     def SetBgColor(self, color: pygame.Color, buttonBorderRadius: int = -1) -> None:

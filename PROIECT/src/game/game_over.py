@@ -24,7 +24,7 @@ class GameOver(Scene):
         self.ChangeBgImage(objImgBg)
 
         self.darkOverlay = Box(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, (0, 0, 0))
-        self.darkOverlay.SetAlphaLevel(100)
+        self.darkOverlay.SetAlphaLevel(125)
 
         marginTop = 20
 

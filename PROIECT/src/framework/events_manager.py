@@ -1,3 +1,4 @@
+from matplotlib.pyplot import clabel
 import pygame
 
 
@@ -17,14 +18,14 @@ class EventsManager:
 
     def AddListener(self, eventType: int, callable) -> None:
         if eventType in self.eventListeners:
-            self.eventListeners[eventType].append(callable)
+            self.eventListeners[eventType].add(callable)
         else:
-            self.eventListeners[eventType] = [callable]
-    
+            self.eventListeners[eventType] = set((callable,))
 
+    
     def RemoveListener(self, eventType: int, callable) -> None:
-        if eventType in self.eventListeners and callable in self.eventListeners[eventType]:
-            self.eventListeners[eventType].remove(callable)
+        if eventType in self.eventListeners:
+            self.eventListeners[eventType].discard(callable)
     
 
     def ClearListeners(self) -> None:
