@@ -16,7 +16,7 @@ if __name__ == "__main__":
     print("\n========================")
     print("=== Framework Tests ====")
     print("========================")
-    runner.run(frameworkSuite)
+    # runner.run(frameworkSuite)
     
     print("\n========================")
     print("====== Game Tests ======")
