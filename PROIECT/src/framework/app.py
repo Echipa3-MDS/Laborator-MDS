@@ -32,7 +32,7 @@ class App:
 
     def __init__(self) -> None:
         # Fereastra aplicatiei
-        self.display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.SCALED)  # pygame.SCALED - problema cu miscarea lina a bg
+        self.display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
         pygame.display.set_caption("Proiect MDS")
 
         # Prima scena rulata de aplicatie
@@ -40,6 +40,9 @@ class App:
 
         # Scena afisata de aplicatie
         self.currentScene = firstScene
+
+        # Indica daca aplicatia reda sunete sau nu
+        self.appMuted = False
 
         self.eventManager = EventsManager.GetInstance()
         self.updateScheduler = UpdateScheduler.GetInstance()
@@ -64,3 +67,11 @@ class App:
             self.currentScene.DrawScene()
             
         self.currentScene.OnSceneExit()
+
+
+    def SwitchMuteOption(self) -> None:
+        self.appMuted = not self.appMuted
+
+
+    def IsMuted(self) -> bool:
+        return self.appMuted
