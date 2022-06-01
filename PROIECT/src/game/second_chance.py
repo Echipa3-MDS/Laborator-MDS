@@ -32,7 +32,7 @@ class SecondChanceInterface(Scene):
         gameFrameBg.blit(darkBgSurface, (0, 0))
         self.ChangeBgImage(gameFrameBg)
 
-        buyQuestionText = f"Cumperi inca o viata? ({self.newLifePrice} monede)"
+        buyQuestionText = f"Cumperi încă o viață? ({self.newLifePrice} monede)"
         self.buyQuestion = TextObject(buyQuestionText, (255, 255, 255), 'Arial', 30, 0, 0)
         bqRect = self.buyQuestion.GetRect()
         self.buyQuestion.ChangeRelativePos((DISPLAY_WIDTH / 2 - bqRect.width / 2, DISPLAY_HEIGHT / 2 - bqRect.height * 2))
@@ -40,8 +40,8 @@ class SecondChanceInterface(Scene):
 
         buttonWidth = 150
         buttonHeight = 50
-        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpara', (0, 0, 0), 'Arial', 26, None, (255, 224, 0))
-        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Iesire', (255, 255, 255), 'Arial', 26, None, (216, 216, 216))
+        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpără', (0, 0, 0), 'Arial', 26, None, (255, 224, 0))
+        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Ieșire', (255, 255, 255), 'Arial', 26, None, (216, 216, 216))
         self.AttachObject(self.buttonBuyLife)
         self.AttachObject(self.buttonQuit)
 
