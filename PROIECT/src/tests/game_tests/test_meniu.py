@@ -107,14 +107,6 @@ class TestMeniu(unittest.TestCase):
         butonMute = appInstance.currentScene.buttonMute
         childrenList= appInstance.currentScene._children
 
-        # appInstance.currentScene.DetachObject(logo)
-        # appInstance.currentScene.DetachObject(butonStart)
-        # appInstance.currentScene.DetachObject(butonHighScores)
-        # appInstance.currentScene.DetachObject(butonInstructiuni)
-        # appInstance.currentScene.DetachObject(butonExit)
-        # appInstance.currentScene.AttachObject(highScoreBox)
-        # appInstance.currentScene.scoreBoardActive = True
-
         appInstance.currentScene.OnMouseDown(pygame.event.Event(pygame.MOUSEBUTTONDOWN, pos=buton.center))
 
         self.assertTrue(butonStart in childrenList and butonHighScores in childrenList and butonInstructiuni 
@@ -141,14 +133,6 @@ class TestMeniu(unittest.TestCase):
         instructionBoxActive = appInstance.currentScene.instructionBoxActive
         butonMute = appInstance.currentScene.buttonMute
         childrenList= appInstance.currentScene._children
-
-        # appInstance.currentScene.DetachObject(logo)
-        # appInstance.currentScene.DetachObject(butonStart)
-        # appInstance.currentScene.DetachObject(butonHighScores)
-        # appInstance.currentScene.DetachObject(butonInstructiuni)
-        # appInstance.currentScene.DetachObject(butonExit)
-        # appInstance.currentScene.AttachObject(instructionBox)
-        # appInstance.currentScene.instructionBoxActive = True
 
         self.assertTrue(butonStart in childrenList and butonHighScores in childrenList and butonInstructiuni 
         in childrenList and butonExit in childrenList and highScoreBox not in childrenList and not highScoreBoxActive
