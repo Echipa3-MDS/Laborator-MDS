@@ -35,11 +35,8 @@ class App:
         self.display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
         pygame.display.set_caption("Proiect MDS")
 
-        # Prima scena rulata de aplicatie
-        firstScene = Meniu()
-
         # Scena afisata de aplicatie
-        self.currentScene = firstScene
+        self.currentScene = Meniu
 
         # Indica daca aplicatia reda sunete sau nu
         self.appMuted = False
@@ -57,6 +54,7 @@ class App:
 
 
     def Run(self) -> None:
+        self.currentScene = self.currentScene()
         self.currentScene.OnSceneEnter()
         
         isRunning = True

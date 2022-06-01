@@ -26,7 +26,7 @@ class PauseMenu(Scene):
         yCenter = DISPLAY_HEIGHT / 2
         self.buttonResume = Button(buttonX, yCenter - buttonH - 7, buttonW, buttonH, 'Continuare joc', (0, 0, 0), 'Arial', 26, None, (216, 216, 216))
         self.AttachObject(self.buttonResume)
-        self.buttonQuit = Button(buttonX, yCenter + 7, buttonW, buttonH, 'Iesire', (0, 0, 0), 'Arial', 26, None, (216, 216, 216))
+        self.buttonQuit = Button(buttonX, yCenter + 7, buttonW, buttonH, 'Ieșire', (0, 0, 0), 'Arial', 26, None, (216, 216, 216))
         self.AttachObject(self.buttonQuit)
         
         muteButtonW = 50

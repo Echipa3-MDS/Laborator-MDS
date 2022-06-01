@@ -42,11 +42,11 @@ class GameOver(Scene):
         self.fontSize = 40
         self.textColor = (0, 0, 0)
 
-        textWidth, textHeight = self.textWidthHeight("Scorul obtinut: " + str(self.scor), self.font, self.fontSize)
+        textWidth, textHeight = self.textWidthHeight("Scorul obținut: " + str(self.scor), self.font, self.fontSize)
         textPosX = DISPLAY_WIDTH / 2 - textWidth / 2
         textPosY = self.top + marginTop
         self.top += textHeight + marginTop
-        self.mesajScor = TextObject("Scorul obtinut: " + str(self.scor), (255, 255, 255), self.font, self.fontSize, textPosX, textPosY)
+        self.mesajScor = TextObject("Scorul obținut: " + str(self.scor), (255, 255, 255), self.font, self.fontSize, textPosX, textPosY)
 
        
         self.inputBoxWidth = 400
@@ -56,23 +56,23 @@ class GameOver(Scene):
 
         self.inputBox = Box(inputBoxposX, inputBoxposY, self.inputBoxWidth, self.inputBoxHeight, (255, 255, 255))
 
-        textWidth, textHeight = self.textWidthHeight("Scor Salvat", self.font, self.fontSize)
+        textWidth, textHeight = self.textWidthHeight("Scor salvat", self.font, self.fontSize)
 
         textPosX = DISPLAY_WIDTH / 2 - textWidth / 2
         textPosY = self.top + marginTop
 
         self.top += max(textHeight, self.inputBoxHeight) + marginTop
 
-        self.mesajScorSalvat = TextObject("Scor Salvat", (255, 255, 255), self.font, self.fontSize, textPosX, textPosY)
+        self.mesajScorSalvat = TextObject("Scor salvat", (255, 255, 255), self.font, self.fontSize, textPosX, textPosY)
 
         self.ibText = ""
 
-        textWidth, textHeight = self.textWidthHeight("Nume jucator", self.font, self.fontSize)
+        textWidth, textHeight = self.textWidthHeight("Nume jucător", self.font, self.fontSize)
 
         linieY = self.inputBoxHeight / 2 - textHeight / 2
         linieX = self.inputBoxWidth / 2 - textWidth / 2
         
-        self.emptyText = TextObject("Nume jucator", (50, 50, 50), self.font, self.fontSize, linieX, linieY)
+        self.emptyText = TextObject("Nume jucător", (50, 50, 50), self.font, self.fontSize, linieX, linieY)
 
         self.textITObject = self.emptyText
         self.inputBox.AttachObject(self.textITObject)
@@ -87,10 +87,10 @@ class GameOver(Scene):
         self.buttonPosY = self.top + marginTop
         self.buttonTextColor = (255, 255, 255)
 
-        self.butonSave = Button(self.buttonPosX + self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, self.fontSize, bgColor=(0, 0, 0))
+        self.butonSave = Button(self.buttonPosX + self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salvează scor', self.buttonTextColor, self.font, self.fontSize, bgColor=(0, 0, 0))
         self.butonSave.SetAlphaLevel(200)
 
-        self.butonIesire = Button(self.buttonPosX - self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, self.fontSize, bgColor=(0, 0, 0))
+        self.butonIesire = Button(self.buttonPosX - self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Ieșire', self.buttonTextColor, self.font, self.fontSize, bgColor=(0, 0, 0))
         self.butonIesire.SetAlphaLevel(200)
 
 
@@ -158,7 +158,7 @@ class GameOver(Scene):
                 self.DetachObject(self.butonSave)
                 self.DetachObject(self.butonIesire)
 
-                self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, self.fontSize, bgColor=(0, 0, 0))
+                self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Ieșire', self.buttonTextColor, self.font, self.fontSize, bgColor=(0, 0, 0))
                 self.butonIesire.SetAlphaLevel(200)
                 self.AttachObject(self.butonIesire)
 
@@ -190,7 +190,7 @@ class GameOver(Scene):
                 if self.inputBoxActive == False:
                     self.inputBoxActive = True
                     self.AttachObject(self.inputBox)
-                    self.butonSave.SetText("Salveaza")
+                    self.butonSave.SetText("Salvează")
                 else:
                     if self.ibText != "":
                         highScore = HighScores.GetInstance()
@@ -203,7 +203,7 @@ class GameOver(Scene):
                     self.DetachObject(self.butonSave)
                     self.DetachObject(self.butonIesire)
 
-                    self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, self.fontSize, bgColor=(0, 0, 0))
+                    self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Ieșire', self.buttonTextColor, self.font, self.fontSize, bgColor=(0, 0, 0))
                     self.butonIesire.SetAlphaLevel(200)
                     self.AttachObject(self.butonIesire)
 
