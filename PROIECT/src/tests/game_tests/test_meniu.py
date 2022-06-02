@@ -12,13 +12,14 @@ class TestMeniu(unittest.TestCase):
     def setUpClass(cls):
         print('\nTesting Meniu...\n')
 
-    def setUp(self):
+    def setUp(self) -> None:
         pygame.init()
-    
-    def tearDown(self):
+
+    def tearDown(self) -> None:
         pygame.quit()
     
     def test_ButtonStart(self):
+        pygame.display.set_mode((800, 600))
         appInstance = App.GetInstance()
         appInstance.currentScene = Meniu()
         buton = appInstance.currentScene.butonStart.GetRect()
