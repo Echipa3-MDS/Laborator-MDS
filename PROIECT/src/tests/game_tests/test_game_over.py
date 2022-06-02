@@ -1,15 +1,9 @@
-import imp
 import unittest
-import copy
-from numpy import unicode_
 import pygame
 
 from game.meniu import Meniu
 from game.game_over import GameOver
-from game.game_session import GameSession
 from framework.app import App
-from framework.scene import Scene
-from tests.constants import RES_DIR
 
 
 class TestGameOver(unittest.TestCase):
@@ -18,19 +12,13 @@ class TestGameOver(unittest.TestCase):
     def setUpClass(cls):
         print('\nTesting GameOver...\n')
     
-    @staticmethod
-    def Init() -> bool:
+    def setUp(self):
         pygame.init()
-        return pygame.get_init()
-
-
-    @staticmethod
-    def Quit() -> bool:
+    
+    def tearDown(self):
         pygame.quit()
-        return not pygame.get_init()
 
     def test_ButonIesire(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = GameOver(100)
         buton = appInstance.currentScene.butonIesire.GetRect()
@@ -38,7 +26,6 @@ class TestGameOver(unittest.TestCase):
         self.assertIsInstance(App.GetInstance().currentScene, Meniu)
     
     def test_ButonSalveaza(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = GameOver(100)
         buton = appInstance.currentScene.butonSave.GetRect()
@@ -51,7 +38,6 @@ class TestGameOver(unittest.TestCase):
         self.assertTrue(inputBoxActive and inputBox in childrenList)
     
     def test_InputBox(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = GameOver(100)
         buton = appInstance.currentScene.butonSave.GetRect()

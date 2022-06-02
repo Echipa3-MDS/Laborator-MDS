@@ -11,20 +11,14 @@ class TestMeniu(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print('\nTesting Meniu...\n')
-    
-    @staticmethod
-    def Init() -> bool:
+
+    def setUp(self):
         pygame.init()
-        return pygame.get_init()
-
-
-    @staticmethod
-    def Quit() -> bool:
+    
+    def tearDown(self):
         pygame.quit()
-        return not pygame.get_init()
     
     def test_ButtonStart(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = Meniu()
         buton = appInstance.currentScene.butonStart.GetRect()
@@ -32,7 +26,6 @@ class TestMeniu(unittest.TestCase):
         self.assertIsInstance(appInstance.currentScene, GameSession)
 
     def test_ButtonExit(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = Meniu()
         buton = appInstance.currentScene.butonExit.GetRect()
@@ -41,7 +34,6 @@ class TestMeniu(unittest.TestCase):
         self.assertTrue(lastEvent.type == pygame.QUIT)
     
     def test_ButtonHighScores(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = Meniu()
         buton = appInstance.currentScene.butonHighScores.GetRect()
@@ -64,7 +56,6 @@ class TestMeniu(unittest.TestCase):
         and instructionBox not in childrenList and not instructionBoxActive and butonMute in childrenList and logo not in childrenList)
     
     def test_ButtonInstructiuni(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = Meniu()
         buton = appInstance.currentScene.butonInstructiuni.GetRect()
@@ -87,7 +78,6 @@ class TestMeniu(unittest.TestCase):
         and instructionBox in childrenList and instructionBoxActive and butonMute in childrenList and logo not in childrenList)
     
     def test_ExitHighScores(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = Meniu()
         buton = appInstance.currentScene.butonHighScores.GetRect()
@@ -114,7 +104,6 @@ class TestMeniu(unittest.TestCase):
         and instructionBox not in childrenList and not instructionBoxActive and butonMute in childrenList and logo in childrenList)
     
     def test_ExitInstructionBox(self):
-        pygame.init()
         appInstance = App.GetInstance()
         appInstance.currentScene = Meniu()
         buton = appInstance.currentScene.butonInstructiuni.GetRect()
