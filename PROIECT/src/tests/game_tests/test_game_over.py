@@ -11,10 +11,11 @@ class TestGameOver(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print('\nTesting GameOver...\n')
+    
+    def setUp(self) -> None:
         pygame.init()
 
-    @classmethod
-    def tearDownClass(cls):
+    def tearDown(self) -> None:
         pygame.quit()
 
     def test_ButonIesire(self):
