@@ -34,7 +34,7 @@ class TestEventsManager(unittest.TestCase):
             pass
 
         EventsManager.GetInstance().AddListener(pygame.USEREVENT, eventListener)
-        self.assertIn((pygame.USEREVENT, [eventListener]), EventsManager.GetInstance().eventListeners.items())
+        self.assertIn((pygame.USEREVENT, set((eventListener,))), EventsManager.GetInstance().eventListeners.items())
     
 
     def test_RemoveListener(self):
