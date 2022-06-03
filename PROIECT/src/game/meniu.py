@@ -21,33 +21,34 @@ class Meniu(Scene):
 
         appObj = app.App.GetInstance()
 
-        logoImg = pygame.image.load(RES_DIR + "logo.png")
-        logoWidth = 400
-        logoHeight = 200
-        logoPosX = DISPLAY_WIDTH / 2 - logoWidth / 2
-        logoPosY = 20
+        logoImg = pygame.image.load(RES_DIR + "img\logo.png")
+        logoWidth = 350
+        logoHeight = 175
+        logoPosX = (DISPLAY_WIDTH / 11)*8 - logoWidth / 2
+        logoPosY = 15
 
         self.logo = Sprite(logoImg, logoPosX, logoPosY, logoWidth, logoHeight)
 
-        buttonWidth = 200
-        buttonHeight = 50
-        posX = DISPLAY_WIDTH / 2 - buttonWidth / 2
+        buttonWidth = 280
+        buttonHeight = 70
+        posX = (DISPLAY_WIDTH / 11)*8 - buttonWidth / 2
         posY = 200
 
-        textColor = (255, 255, 255)
-        font = 'arial'
+        textColor = (0, 0, 0)
+        font = RES_DIR + "font\Happy School.ttf"
         fontSize = 40
         bgColor = (0, 0, 0)
-        bgImage = None
+        bgImage = RES_DIR + "img/ButtonBg.png"
+        self.ChangeBgImage(pygame.transform.scale(pygame.image.load(RES_DIR + "img/bgconcept.png"),(DISPLAY_WIDTH,DISPLAY_HEIGHT)))
         borderRadius = 5
         buttonTop = 20
-        alpha = 200
+        alpha = 255
         
 
         self.butonStart = Button(posX, posY, buttonWidth, buttonHeight, 'Start', textColor, font, fontSize, bgImage, bgColor)
         self.butonHighScores = Button(posX, posY + buttonHeight + buttonTop, buttonWidth, buttonHeight, 'Top Scoruri', textColor, font, fontSize, bgImage, bgColor)
-        self.butonInstructiuni = Button(posX, posY + 2 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Instrucțiuni', textColor, font, fontSize, bgImage, bgColor)
-        self.butonExit = Button(posX, posY + 3 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Ieșire', textColor, font, fontSize, bgImage, bgColor)
+        self.butonInstructiuni = Button(posX, posY + 2 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Instructiuni', textColor, font, fontSize, bgImage, bgColor)
+        self.butonExit = Button(posX, posY + 3 * (buttonHeight + buttonTop), buttonWidth, buttonHeight, 'Iesire', textColor, font, fontSize, bgImage, bgColor)
         
         self.butonStart.SetAlphaLevel(alpha)
         self.butonHighScores.SetAlphaLevel(alpha)
@@ -84,7 +85,7 @@ class Meniu(Scene):
         hsFontSize = 20
         
         for it, linie in enumerate(liniHighScore):
-            fontT = pygame.font.SysFont(font, hsFontSize)
+            fontT = pygame.font.SysFont(font, 30)
             textSurface = fontT.render(linie, True, textColor)
             textWidth = textSurface.get_width()
             textHeight = textSurface.get_height()
@@ -92,7 +93,7 @@ class Meniu(Scene):
             linieY = hsTop + textHeight
             linieX = hsWidth / 2 - textWidth / 2
 
-            textHSObject = TextObject(linie, textColor, font, hsFontSize, linieX, it * (linieY))
+            textHSObject = TextObject(linie, textColor, 'arial', 30, linieX, it * (linieY))
             self.scoreBoard.AttachObject(textHSObject)
 
         textInstructiuni = """
@@ -112,9 +113,9 @@ class Meniu(Scene):
         for it, linie in enumerate(liniInstructiuni):
             linie = linie.strip()
             if it > 0:
-                fontT = pygame.font.SysFont(font, hsFontSize)
+                fontT = pygame.font.SysFont('arial', hsFontSize)
             else:
-                fontT = pygame.font.SysFont(font, hsFontSize + 10)
+                fontT = pygame.font.SysFont('arial', hsFontSize + 10)
             textSurface = fontT.render(linie, True, textColor)
             textWidth = textSurface.get_width()
             textHeight = textSurface.get_height()
@@ -122,9 +123,9 @@ class Meniu(Scene):
             linieY = hsTop + textHeight
             linieX = hsWidth / 2 - textWidth / 2
             if it > 0:
-                textHSObject = TextObject(linie, textColor, font, hsFontSize, linieX, it * (linieY))
+                textHSObject = TextObject(linie, textColor, 'arial', hsFontSize, linieX, it * (linieY))
             else:
-                textHSObject = TextObject(linie, textColor, font, hsFontSize + 10, linieX, it * (linieY))
+                textHSObject = TextObject(linie, textColor, 'arial', hsFontSize + 10, linieX, it * (linieY))
             self.instructionBox.AttachObject(textHSObject)
         muteButtonW = 50
         muteButtonH = 50
@@ -166,17 +167,20 @@ class Meniu(Scene):
             if not self.scoreBoardActive and not self.instructionBoxActive:
                 butonStart = self.butonStart.GetRect()
                 if butonStart.collidepoint(pos):
+                    self.butonStart.ClickedSound(app.App.GetInstance().IsMuted())
                     gameScene = GameSession()
                     appObj = app.App.GetInstance()
                     appObj.PlayNewScene(gameScene)
                 
                 butonExit = self.butonExit.GetRect()
                 if butonExit.collidepoint(pos):
+                    self.butonExit.ClickedSound(app.App.GetInstance().IsMuted())
                     quitEvent = pygame.event.Event(pygame.QUIT)
                     pygame.event.post(quitEvent)
                 
                 butonHighScore = self.butonHighScores.GetRect()
                 if butonHighScore.collidepoint(pos):
+                    self.butonHighScores.ClickedSound(app.App.GetInstance().IsMuted())
                     self.DetachObject(self.logo)
                     self.DetachObject(self.butonStart)
                     self.DetachObject(self.butonHighScores)
@@ -187,6 +191,7 @@ class Meniu(Scene):
                 
                 butonInstructiuni = self.butonInstructiuni.GetRect()
                 if butonInstructiuni.collidepoint(pos):
+                    self.butonInstructiuni.ClickedSound(app.App.GetInstance().IsMuted())
                     self.DetachObject(self.logo)
                     self.DetachObject(self.butonStart)
                     self.DetachObject(self.butonHighScores)
@@ -199,6 +204,7 @@ class Meniu(Scene):
                 if self.scoreBoardActive:
                     butonExitHs = self.hsExitButton.GetRect()
                     if butonExitHs.collidepoint(pos):
+                        self.hsExitButton.ClickedSound(app.App.GetInstance().IsMuted())
                         self.AttachObject(self.logo)
                         self.AttachObject(self.butonStart)
                         self.AttachObject(self.butonHighScores)
@@ -209,6 +215,7 @@ class Meniu(Scene):
                 elif self.instructionBoxActive:
                     butonExitIn = self.inExitButton.GetRect()
                     if butonExitIn.collidepoint(pos):
+                        self.inExitButton.ClickedSound(app.App.GetInstance().IsMuted())
                         self.AttachObject(self.logo)
                         self.AttachObject(self.butonStart)
                         self.AttachObject(self.butonHighScores)
@@ -220,4 +227,6 @@ class Meniu(Scene):
             if butonMute.collidepoint(pos):
                 appInst = app.App.GetInstance()
                 appInst.SwitchMuteOption()
+                if(not appInst.IsMuted()):
+                    pygame.mixer.Sound(RES_DIR + "audio/Click.ogg").play()
                 self.buttonMute.SetBgImage(self.mutedIcon if appInst.IsMuted() else self.unmutedIcon)

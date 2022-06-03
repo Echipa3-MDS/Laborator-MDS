@@ -50,7 +50,13 @@ class Animation(RenderedObject):
         super().ChangeSize(width, height)
         self.frames = [pygame.transform.scale(texture, (width, height)) for texture in self.frames]
 
-
+    def Rotate(self, angle: float) -> 'Animation':
+        rotated = [pygame.transform.rotate(texture, angle) for texture in self.frames]
+        newAnimation = Animation( 0, 0, rotated[0].get_width(), rotated[0].get_height(), rotated, self.timeBetweenFrames)
+        distanceToOldCenter = (self._frame.center[0] - newAnimation._frame.center[0], self._frame.center[1] - newAnimation._frame.center[1])
+        newAnimation.ChangeRelativePos(distanceToOldCenter)
+        return newAnimation
+        
     def __updateFrame(self, deltaTime: float) -> None:
         self.timeSinceChange += deltaTime
         if self.timeSinceChange >= self.timeBetweenFrames:

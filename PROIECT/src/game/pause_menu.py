@@ -20,13 +20,13 @@ class PauseMenu(Scene):
         displayState.blit(darkBgSurface, (0, 0))
         self.ChangeBgImage(displayState)
 
-        buttonW = 200
-        buttonH = 50
+        buttonW = 280
+        buttonH = 70
         buttonX = DISPLAY_WIDTH / 2 - buttonW / 2
         yCenter = DISPLAY_HEIGHT / 2
-        self.buttonResume = Button(buttonX, yCenter - buttonH - 7, buttonW, buttonH, 'Continuare joc', (0, 0, 0), 'Arial', 26, None, (216, 216, 216))
+        self.buttonResume = Button(buttonX, yCenter - buttonH - 7, buttonW, buttonH, 'Continuare joc', (0, 0, 0), RES_DIR + "font\Happy School.ttf", 30, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
         self.AttachObject(self.buttonResume)
-        self.buttonQuit = Button(buttonX, yCenter + 7, buttonW, buttonH, 'Ieșire', (0, 0, 0), 'Arial', 26, None, (216, 216, 216))
+        self.buttonQuit = Button(buttonX, yCenter + 7, buttonW, buttonH, 'Iesire', (0, 0, 0), RES_DIR + "font\Happy School.ttf", 30, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
         self.AttachObject(self.buttonQuit)
         
         muteButtonW = 50
@@ -52,6 +52,7 @@ class PauseMenu(Scene):
 
     def OnButtonResume(self, event: pygame.event.Event) -> None:
         if self.buttonResume.CollidesWithPoint(event.pos):
+            self.buttonResume.ClickedSound(app.App.GetInstance().IsMuted())
             app.App().GetInstance().PlayNewScene(self.gameScene)
     
 
@@ -59,10 +60,15 @@ class PauseMenu(Scene):
         if self.buttonMute.CollidesWithPoint(event.pos):
             appInst = app.App.GetInstance()
             appInst.SwitchMuteOption()
+            if(not appInst.IsMuted()):
+                pygame.mixer.Sound(RES_DIR + "audio/Click.ogg").play()
+            pygame.mixer.Channel(0).set_volume(0 if appInst.IsMuted() else 0.1)
             self.buttonMute.SetBgImage(self.mutedIcon if appInst.IsMuted() else self.unmutedIcon)
     
 
     def OnButtonQuit(self, event: pygame.event.Event) -> None:
         if self.buttonQuit.CollidesWithPoint(event.pos):
+            self.buttonQuit.ClickedSound(app.App.GetInstance().IsMuted())
             mainMenu = gm.Meniu()
+            pygame.mixer.Channel(0).stop()
             app.App().GetInstance().PlayNewScene(mainMenu)
