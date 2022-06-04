@@ -45,10 +45,12 @@ class TestApp(unittest.TestCase):
         if App.__dict__['_App__instance'] is not None:
             App.__dict__['_App__instance'].__init__()
         app = App.GetInstance()
-        scene = Scene()
-        app.PlayNewScene(scene)
+        scene1 = Scene()
+        app.currentScene = scene1
+        scene2 = Scene()
+        app.PlayNewScene(scene2)
         pygame.quit()
-        self.assertEqual(id(app.currentScene), id(scene))
+        self.assertEqual(id(app.currentScene), id(scene2))
     
 
     def test_Run(self):
@@ -67,20 +69,20 @@ class TestApp(unittest.TestCase):
             
             def event(self, event: pygame.event.Event) -> None:
                 self.numberOfEvents += 1
-        
-        scene = HelperScene()
+
+        if App.__dict__['_App__instance'] is not None:
+            App.__dict__['_App__instance'].__init__()
+        app = App.GetInstance()
 
         pygame.event.post(pygame.event.Event(pygame.USEREVENT))
         pygame.event.post(pygame.event.Event(pygame.USEREVENT))
         pygame.event.post(pygame.event.Event(pygame.USEREVENT))
         pygame.event.post(pygame.event.Event(pygame.QUIT))
 
-        if App.__dict__['_App__instance'] is not None:
-            App.__dict__['_App__instance'].__init__()
-        App.GetInstance().currentScene = scene
-        App.GetInstance().Run()
+        app.currentScene = HelperScene
+        app.Run()
         
-        ranFrames = min(scene.numberOfUpdates, scene.numberOfEvents)
+        ranFrames = min(app.currentScene.numberOfUpdates, app.currentScene.numberOfEvents)
         
         App.Quit()
 
