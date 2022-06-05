@@ -67,6 +67,10 @@ class LaserRocketWave:
         scheduler.ScheduleUpdate(self.UpdateCoins)
         if self.haveRockets:
             scheduler.ScheduleUpdate(self.UpdateRockets)
+            if isinstance(self.currentRocket, Animation):
+                self.currentRocket.PlayAnimation()
+        for laser in self.lasers:
+            laser.PlayAnimation()
         for block in self.coinBlocks:
             block.SetActive()
 
@@ -79,7 +83,10 @@ class LaserRocketWave:
             scheduler.UnscheduleUpdate(self.UpdateRockets)
             if self.currentRocket is not None:
                 self.gameScene.gameLayer.DetachObject(self.currentRocket)
+                if isinstance(self.currentRocket, Animation):
+                    self.currentRocket.StopAnimation()
         for laser in self.lasers:
+            laser.StopAnimation()
             self.gameScene.gameLayer.DetachObject(laser)
         for block in self.coinBlocks:
             block.CleanUp()
