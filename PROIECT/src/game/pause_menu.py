@@ -21,12 +21,12 @@ class PauseMenu(Scene):
         self.ChangeBgImage(displayState)
 
         buttonW = 280
-        buttonH = 70
+        buttonH = 60
         buttonX = DISPLAY_WIDTH / 2 - buttonW / 2
         yCenter = DISPLAY_HEIGHT / 2
-        self.buttonResume = Button(buttonX, yCenter - buttonH - 7, buttonW, buttonH, 'Continuare joc', (0, 0, 0), RES_DIR + "font\Happy School.ttf", 30, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
+        self.buttonResume = Button(buttonX, yCenter - buttonH - 7, buttonW, buttonH, 'Continuare joc', (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
         self.AttachObject(self.buttonResume)
-        self.buttonQuit = Button(buttonX, yCenter + 7, buttonW, buttonH, 'Iesire', (0, 0, 0), RES_DIR + "font\Happy School.ttf", 30, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
+        self.buttonQuit = Button(buttonX, yCenter + 7, buttonW, buttonH, 'Iesire', (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
         self.AttachObject(self.buttonQuit)
         
         muteButtonW = 50

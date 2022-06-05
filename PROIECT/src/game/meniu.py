@@ -30,11 +30,11 @@ class Meniu(Scene):
         self.logo = Sprite(logoImg, logoPosX, logoPosY, logoWidth, logoHeight)
 
         buttonWidth = 280
-        buttonHeight = 70
+        buttonHeight = 60
         posX = (DISPLAY_WIDTH / 11)*8 - buttonWidth / 2
         posY = 200
 
-        textColor = (0, 0, 0)
+        textColor = (255, 255, 255)
         font = RES_DIR + "font\Happy School.ttf"
         fontSize = 40
         bgColor = (0, 0, 0)

@@ -39,7 +39,7 @@ class GameOver(Scene):
         self.GOI = Sprite(gameOverImg, GOIPosX, GOIPosY, GOIWidth, GOIHeight)
 
         self.font = RES_DIR + "font\Happy School.ttf"
-        self.fontSize = 30
+        self.fontSize = 40
         self.textColor = (0, 0, 0)
 
         textWidth, textHeight = self.textWidthHeight("Scorul obținut: " + str(self.scor), self.font, self.fontSize)
@@ -72,7 +72,7 @@ class GameOver(Scene):
         linieY = self.inputBoxHeight / 2 - textHeight / 2 - 5
         linieX = self.inputBoxWidth / 2 - textWidth / 2 - 40
         
-        self.emptyText = TextObject("Nume jucator", (50, 50, 50), self.font, self.fontSize, linieX-20, linieY-5)
+        self.emptyText = TextObject("Nume jucator", (50, 50, 50), self.font, self.fontSize, linieX+16, linieY)
 
         self.textITObject = self.emptyText
         self.inputBox.AttachObject(self.textITObject)
@@ -81,15 +81,15 @@ class GameOver(Scene):
 
         self.inputBoxActive = False
 
-        self.buttonWidth = 200
-        self.buttonHeight = 50
+        self.buttonWidth = 275
+        self.buttonHeight = 65
         self.buttonPosX = DISPLAY_WIDTH / 2 - self.buttonWidth / 2
         self.buttonPosY = self.top + marginTop
-        self.buttonTextColor = (0, 0, 0)
+        self.buttonTextColor = (255, 255, 255)
 
-        self.butonSave = Button(self.buttonPosX + self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, 25, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
+        self.butonSave = Button(self.buttonPosX + self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, 38, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
 
-        self.butonIesire = Button(self.buttonPosX - self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 25, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
+        self.butonIesire = Button(self.buttonPosX - self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 38, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
 
 
         self.AttachObject(self.darkOverlay)

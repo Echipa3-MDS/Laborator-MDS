@@ -93,14 +93,14 @@ class GameSession(Scene):
         self.infoLayer.AttachObject(self.chenar)
         # Scor
         self.score = 0.0
-        self.scoreText = TextObject("0m", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 26, 0, 0)
+        self.scoreText = TextObject("0m", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, 0, 0)
         self.infoLayer.AttachObject(self.scoreText)
 
         # Bani
         self.collectedCoins = 0
         coinImg = pygame.image.load(RES_DIR + 'coin/coin_01.png').convert_alpha()
         coinIcon = Sprite(coinImg, self.scoreText.GetRect().right + 100, 0, 30, 30)
-        self.coinsText = TextObject("0", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 26, coinIcon.GetRect().right + 10, 0)
+        self.coinsText = TextObject("0", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, coinIcon.GetRect().right + 10, 0)
         self.infoLayer.AttachObject(self.coinsText)
         self.infoLayer.AttachObject(coinIcon)
 
@@ -108,7 +108,7 @@ class GameSession(Scene):
         self.playerLives = 1
         heartImg = pygame.image.load(RES_DIR + 'heart.png').convert_alpha()
         heartIcon = Sprite(heartImg, self.coinsText.GetRect().right + 100, 0, 30, 30)
-        self.playerLivesText = TextObject(str(self.playerLives), (255, 255, 255), RES_DIR + "font\Happy School.ttf", 26, heartIcon.GetRect().right + 10, 0)
+        self.playerLivesText = TextObject(str(self.playerLives), (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, heartIcon.GetRect().right + 10, 0)
         self.infoLayer.AttachObject(self.playerLivesText)
         self.infoLayer.AttachObject(heartIcon)
     

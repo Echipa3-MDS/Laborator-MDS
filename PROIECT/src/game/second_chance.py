@@ -38,10 +38,10 @@ class SecondChanceInterface(Scene):
         self.buyQuestion.ChangeRelativePos((DISPLAY_WIDTH / 2 - bqRect.width / 2, DISPLAY_HEIGHT / 2 - bqRect.height * 2))
         self.AttachObject(self.buyQuestion)
 
-        buttonWidth = 150
+        buttonWidth = 200
         buttonHeight = 50
-        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpara', (0, 0, 0), RES_DIR + "font\Happy School.ttf", 26, RES_DIR + "img/ButtonBg.png", (255, 224, 0))
-        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Iesire', (0, 0, 0), RES_DIR + "font\Happy School.ttf", 26, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
+        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpara', (255, 255, 255), RES_DIR + "font\Happy School.ttf", 30, RES_DIR + "img/ButtonBg.png", (255, 224, 0))
+        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Iesire', (255, 255, 255), RES_DIR + "font\Happy School.ttf", 30, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
         self.AttachObject(self.buttonBuyLife)
         self.AttachObject(self.buttonQuit)
 
