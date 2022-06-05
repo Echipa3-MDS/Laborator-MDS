@@ -93,7 +93,7 @@ class Meniu(Scene):
             linieY = hsTop + textHeight
             linieX = hsWidth / 2 - textWidth / 2
 
-            textHSObject = TextObject(linie, textColor, 'arial', 30, linieX, it * (linieY))
+            textHSObject = TextObject(linie, (255, 255, 255), 'arial', 30, linieX, it * (linieY))
             self.scoreBoard.AttachObject(textHSObject)
 
         textInstructiuni = """
@@ -123,9 +123,9 @@ class Meniu(Scene):
             linieY = hsTop + textHeight
             linieX = hsWidth / 2 - textWidth / 2
             if it > 0:
-                textHSObject = TextObject(linie, textColor, 'arial', hsFontSize, linieX, it * (linieY))
+                textHSObject = TextObject(linie, (255, 255, 255), 'arial', hsFontSize, linieX, it * (linieY))
             else:
-                textHSObject = TextObject(linie, textColor, 'arial', hsFontSize + 10, linieX, it * (linieY))
+                textHSObject = TextObject(linie, (255, 255, 255), 'arial', hsFontSize + 10, linieX, it * (linieY))
             self.instructionBox.AttachObject(textHSObject)
         muteButtonW = 50
         muteButtonH = 50

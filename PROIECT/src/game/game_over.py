@@ -26,11 +26,11 @@ class GameOver(Scene):
         self.darkOverlay = Box(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, (0, 0, 0))
         self.darkOverlay.SetAlphaLevel(125)
 
-        marginTop = 20
+        marginTop = 40
 
         gameOverImg = pygame.image.load(RES_DIR + "img/GameOver.png")
-        GOIWidth = 400
-        GOIHeight = 200
+        GOIWidth = 300
+        GOIHeight = 150
         GOIPosX = DISPLAY_WIDTH / 2 - GOIWidth / 2
         GOIPosY = self.top + marginTop
 
@@ -39,14 +39,14 @@ class GameOver(Scene):
         self.GOI = Sprite(gameOverImg, GOIPosX, GOIPosY, GOIWidth, GOIHeight)
 
         self.font = RES_DIR + "font\Happy School.ttf"
-        self.fontSize = 40
+        self.fontSize = 30
         self.textColor = (0, 0, 0)
 
         textWidth, textHeight = self.textWidthHeight("Scorul obținut: " + str(self.scor), self.font, self.fontSize)
         textPosX = DISPLAY_WIDTH / 2 - textWidth / 2
         textPosY = self.top + marginTop
         self.top += textHeight + marginTop
-        self.mesajScor = TextObject("Scorul obtinut: " + str(self.scor), (255, 255, 255), self.font, self.fontSize, textPosX-63, textPosY)
+        self.mesajScor = TextObject("Scorul obtinut: " + str(self.scor), (255, 255, 255), self.font, self.fontSize, textPosX-40, textPosY)
 
        
         self.inputBoxWidth = 400
@@ -63,7 +63,7 @@ class GameOver(Scene):
 
         self.top += max(textHeight, self.inputBoxHeight) + marginTop
 
-        self.mesajScorSalvat = TextObject("Scor salvat", (255, 255, 255), self.font, self.fontSize, textPosX-40, textPosY)
+        self.mesajScorSalvat = TextObject("Scor salvat", (255, 255, 255), self.font, self.fontSize, textPosX-25, textPosY)
 
         self.ibText = ""
 
@@ -81,15 +81,15 @@ class GameOver(Scene):
 
         self.inputBoxActive = False
 
-        self.buttonWidth = 280
-        self.buttonHeight = 70
+        self.buttonWidth = 200
+        self.buttonHeight = 50
         self.buttonPosX = DISPLAY_WIDTH / 2 - self.buttonWidth / 2
         self.buttonPosY = self.top + marginTop
         self.buttonTextColor = (0, 0, 0)
 
-        self.butonSave = Button(self.buttonPosX + self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, 30, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
+        self.butonSave = Button(self.buttonPosX + self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, 25, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
 
-        self.butonIesire = Button(self.buttonPosX - self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 30, RES_DIR + "img/ButtonBg.png",bgColor=(0, 0, 0))
+        self.butonIesire = Button(self.buttonPosX - self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 25, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
 
 
         self.AttachObject(self.darkOverlay)

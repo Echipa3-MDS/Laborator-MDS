@@ -32,20 +32,20 @@ class SecondChanceInterface(Scene):
         gameFrameBg.blit(darkBgSurface, (0, 0))
         self.ChangeBgImage(gameFrameBg)
 
-        buyQuestionText = f"Cumperi încă o viață? ({self.newLifePrice} monede)"
-        self.buyQuestion = TextObject(buyQuestionText, (255, 255, 255), 'Arial', 30, 0, 0)
+        buyQuestionText = f"Cumperi inca o viata? ({self.newLifePrice} monede)"
+        self.buyQuestion = TextObject(buyQuestionText, (255, 255, 255), RES_DIR + "font\Happy School.ttf", 30, 0, 0)
         bqRect = self.buyQuestion.GetRect()
         self.buyQuestion.ChangeRelativePos((DISPLAY_WIDTH / 2 - bqRect.width / 2, DISPLAY_HEIGHT / 2 - bqRect.height * 2))
         self.AttachObject(self.buyQuestion)
 
         buttonWidth = 150
         buttonHeight = 50
-        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpără', (0, 0, 0), 'Arial', 26, None, (255, 224, 0))
-        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Ieșire', (255, 255, 255), 'Arial', 26, None, (216, 216, 216))
+        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpara', (0, 0, 0), RES_DIR + "font\Happy School.ttf", 26, RES_DIR + "img/ButtonBg.png", (255, 224, 0))
+        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Iesire', (0, 0, 0), RES_DIR + "font\Happy School.ttf", 26, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
         self.AttachObject(self.buttonBuyLife)
         self.AttachObject(self.buttonQuit)
 
-        self.timer = TextObject(str(self.givenTime), (255, 255, 255), 'Arial', 40, 0, 0)
+        self.timer = TextObject(str(self.givenTime), (255, 255, 255), RES_DIR + "font\Happy School.ttf", 40, 0, 0)
         timerRect = self.timer.GetRect()
         self.timer.ChangeRelativePos((DISPLAY_WIDTH / 2 - timerRect.width / 2, DISPLAY_HEIGHT / 2 + self.buttonQuit.GetRect().height + 30))
         self.AttachObject(self.timer)
@@ -67,7 +67,8 @@ class SecondChanceInterface(Scene):
     
 
     def OnButtonBuy(self, event: pygame.event.Event) -> None:
-        if self.buttonBuyLife.CollidesWithPoint(event.pos):            
+        if self.buttonBuyLife.CollidesWithPoint(event.pos):  
+            self.buttonBuyLife.ClickedSound(app.App.GetInstance().IsMuted())          
             self.gameScene.AddCoins(-self.newLifePrice)
             self.gameScene.RevivePlayer()
             app.App.GetInstance().PlayNewScene(self.gameScene)
@@ -75,6 +76,8 @@ class SecondChanceInterface(Scene):
 
     def OnButtonQuit(self, event: pygame.event.Event) -> None:
         if self.buttonQuit.CollidesWithPoint(event.pos):
+            self.buttonQuit.ClickedSound(app.App.GetInstance().IsMuted())
+            pygame.mixer.Channel(0).stop()
             self.ToGameOver()
     
 
