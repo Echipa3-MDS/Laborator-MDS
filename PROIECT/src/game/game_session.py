@@ -11,6 +11,7 @@ from framework.update_scheduler import UpdateScheduler
 from framework.events_manager import EventsManager
 from framework.animation import Animation
 from framework.constants import *
+from framework.box import Box
 import framework.app as app
 
 from game.obstacles.laser_rocket_wave import LaserRocketWave
@@ -28,6 +29,11 @@ class GameSession(Scene):
         self.infoLayer = RenderedObject(0, 0, 0, 0)  # Se vor atasa obiecte utile utilizatorului (scor, butonul de pauza, ...)
         self.AttachObject(self.gameLayer)
         self.AttachObject(self.infoLayer)
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound(RES_DIR + "audio/Arcade-Fantasy.mp3"), loops=-1)
+        if(app.App.GetInstance().IsMuted()):
+            pygame.mixer.Channel(0).set_volume(0)
+        else:
+             pygame.mixer.Channel(0).set_volume(0.1)
 
         # Miscarea scenei
         self.sceneAcceleration = 0
@@ -80,16 +86,21 @@ class GameSession(Scene):
         self.obstacleWave = None
         self.transTimeElapsed = 0.0
 
+        #Chenar negru
+
+        self.chenar = Box(0, 0, 360, 32, (0, 0, 0))
+        self.chenar.SetAlphaLevel(130)
+        self.infoLayer.AttachObject(self.chenar)
         # Scor
         self.score = 0.0
-        self.scoreText = TextObject("0m", (255, 255, 255), "Arial", 26, 0, 0)
+        self.scoreText = TextObject("0m", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, 0, 0)
         self.infoLayer.AttachObject(self.scoreText)
 
         # Bani
         self.collectedCoins = 0
         coinImg = pygame.image.load(RES_DIR + 'coin/coin_01.png').convert_alpha()
         coinIcon = Sprite(coinImg, self.scoreText.GetRect().right + 100, 0, 30, 30)
-        self.coinsText = TextObject("0", (255, 255, 255), "Arial", 26, coinIcon.GetRect().right + 10, 0)
+        self.coinsText = TextObject("0", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, coinIcon.GetRect().right + 10, 0)
         self.infoLayer.AttachObject(self.coinsText)
         self.infoLayer.AttachObject(coinIcon)
 
@@ -97,7 +108,7 @@ class GameSession(Scene):
         self.playerLives = 1
         heartImg = pygame.image.load(RES_DIR + 'heart.png').convert_alpha()
         heartIcon = Sprite(heartImg, self.coinsText.GetRect().right + 100, 0, 30, 30)
-        self.playerLivesText = TextObject(str(self.playerLives), (255, 255, 255), 'Arial', 26, heartIcon.GetRect().right + 10, 0)
+        self.playerLivesText = TextObject(str(self.playerLives), (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, heartIcon.GetRect().right + 10, 0)
         self.infoLayer.AttachObject(self.playerLivesText)
         self.infoLayer.AttachObject(heartIcon)
     
@@ -259,6 +270,7 @@ class GameSession(Scene):
 
     def OnButtonPause(self, event: pygame.event.Event) -> None:
         if self.pauseButton.CollidesWithPoint(event.pos):
+            self.pauseButton.ClickedSound(app.App.GetInstance().IsMuted())
             displayState = pygame.display.get_surface().copy()
             pauseScene = pm.PauseMenu(self, displayState)
             app.App.GetInstance().PlayNewScene(pauseScene)
