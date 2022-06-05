@@ -175,7 +175,7 @@ class GameOver(Scene):
 
     def OnMouseDown(self, event: pygame.event.Event) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
+            pos = event.pos
             butonIesire = self.butonIesire.GetRect()
             if butonIesire.collidepoint(pos):
                 self.butonIesire.ClickedSound(app.App.GetInstance().IsMuted())

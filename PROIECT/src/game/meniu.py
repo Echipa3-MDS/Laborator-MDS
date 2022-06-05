@@ -163,7 +163,7 @@ class Meniu(Scene):
     def OnMouseDown(self, event: pygame.event.Event) -> None:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
+            pos = event.pos
             if not self.scoreBoardActive and not self.instructionBoxActive:
                 butonStart = self.butonStart.GetRect()
                 if butonStart.collidepoint(pos):
