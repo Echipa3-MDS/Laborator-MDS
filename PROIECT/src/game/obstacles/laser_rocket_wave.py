@@ -20,8 +20,13 @@ class LaserRocketWave:
 
         self.laserWidth = 250
         self.laserHeight = 40
-        frameTime = 0.15
-        laserImgs = [pygame.image.load(RES_DIR + 'img/laser/laser1.png'),pygame.image.load(RES_DIR + 'img/laser/laser2.png'),pygame.image.load(RES_DIR + 'img/laser/laser3.png'),pygame.image.load(RES_DIR + 'img/laser/laser2.png')]
+        frameTime = 0.115
+        laserImgs = [
+            pygame.image.load(RES_DIR + 'img/laser/laser1.png'),
+            pygame.image.load(RES_DIR + 'img/laser/laser2.png'),
+            pygame.image.load(RES_DIR + 'img/laser/laser3.png'),
+            pygame.image.load(RES_DIR + 'img/laser/laser2.png')
+        ]
         self.baseLaserSprites = Animation(0, 0, self.laserWidth, self.laserHeight, laserImgs, frameTime)
         self.lasers = []
         self.lasersPixelMasks = []
@@ -30,14 +35,20 @@ class LaserRocketWave:
         self.haveRockets = haveRockets
         self.warningDuration = 2.0
         self.warningTraceSpeed = 100
-        self.rocketSpeed = 500
+        self.rocketSpeed = 200           # Velocitatea rachetei = Velocitatea scenei + viteza rachetei
 
         self.rocketWidth = 200
         self.rocketHeight = 35
         self.warningWidth = 50
         self.warningHeight = 50
         self.warningImg = pygame.image.load(RES_DIR + 'img/rocket_warning.png')
-        self.rocketImg = [pygame.image.load(RES_DIR + 'img/rocket/rocket1.png'),pygame.image.load(RES_DIR + 'img/rocket/rocket2.png'),pygame.image.load(RES_DIR + 'img/rocket/rocket3.png'),pygame.image.load(RES_DIR + 'img/rocket/rocket2.png')]
+        self.rocketFrameTime = 0.05
+        self.rocketImg = [
+            pygame.image.load(RES_DIR + 'img/rocket/rocket1.png'),
+            pygame.image.load(RES_DIR + 'img/rocket/rocket2.png'),
+            pygame.image.load(RES_DIR + 'img/rocket/rocket3.png'),
+            pygame.image.load(RES_DIR + 'img/rocket/rocket2.png')
+        ]
         self.currentRocket = None
         self.warningTime = 0.0
 
@@ -56,6 +67,10 @@ class LaserRocketWave:
         scheduler.ScheduleUpdate(self.UpdateCoins)
         if self.haveRockets:
             scheduler.ScheduleUpdate(self.UpdateRockets)
+            if isinstance(self.currentRocket, Animation):
+                self.currentRocket.PlayAnimation()
+        for laser in self.lasers:
+            laser.PlayAnimation()
         for block in self.coinBlocks:
             block.SetActive()
 
@@ -68,7 +83,10 @@ class LaserRocketWave:
             scheduler.UnscheduleUpdate(self.UpdateRockets)
             if self.currentRocket is not None:
                 self.gameScene.gameLayer.DetachObject(self.currentRocket)
+                if isinstance(self.currentRocket, Animation):
+                    self.currentRocket.StopAnimation()
         for laser in self.lasers:
+            laser.StopAnimation()
             self.gameScene.gameLayer.DetachObject(laser)
         for block in self.coinBlocks:
             block.CleanUp()
@@ -103,7 +121,7 @@ class LaserRocketWave:
             if self.warningTime >= self.warningDuration:
                self.__LaunchRocket()
         else:
-            moveAmountX = self.rocketSpeed * -1 * deltaTime
+            moveAmountX = (self.gameScene.sceneXVelocity - self.rocketSpeed) * deltaTime
             self.currentRocket.MoveBy((moveAmountX, 0))
             if self.currentRocket.GetRect().right < 0:
                 if self.__LasersEnded():
@@ -198,7 +216,7 @@ class LaserRocketWave:
     def __LaunchRocket(self) -> None:
         self.gameScene.gameLayer.DetachObject(self.currentRocket)
         rocketY = self.currentRocket.GetRelativePos().y
-        self.currentRocket = Animation(DISPLAY_WIDTH, rocketY, self.rocketWidth, self.rocketHeight, self.rocketImg, 0.15)
+        self.currentRocket = Animation(DISPLAY_WIDTH, rocketY, self.rocketWidth, self.rocketHeight, self.rocketImg, self.rocketFrameTime)
         self.rocketPixelMask = pygame.mask.from_surface(self.currentRocket.frames[0])
         self.currentRocket.PlayAnimation()
         self.gameScene.gameLayer.AttachObject(self.currentRocket)

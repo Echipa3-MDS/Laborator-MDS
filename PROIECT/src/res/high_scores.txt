@@ -1,5 +1,6 @@
 Jucator10 2000
 Jucator8 1919
+dfdf 1858
 Jucator1 1600
 Jucator16 992
 Jucator9 823
