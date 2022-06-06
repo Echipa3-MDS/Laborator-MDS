@@ -24,13 +24,14 @@ import game.game_over as gover
 class GameSession(Scene):
     def __init__(self) -> None:
         super().__init__()
-        
-        self.bgLayer = RenderedObject(0, 0, 0, 0)    # Se vor atasa imagini de background
+
+        self.bgLayer = RenderedObject(0, 0, 0, 0)    # Se vor atasa elemente de background
         self.gameLayer = RenderedObject(0, 0, 0, 0)  # Se vor atasa obiectele jocului (obstacole, jucator, ...)
         self.infoLayer = RenderedObject(0, 0, 0, 0)  # Se vor atasa obiecte utile utilizatorului (scor, butonul de pauza, ...)
         self.AttachObject(self.bgLayer)
         self.AttachObject(self.gameLayer)
         self.AttachObject(self.infoLayer)
+
         pygame.mixer.Channel(0).play(pygame.mixer.Sound(RES_DIR + "audio/Arcade-Fantasy.mp3"), loops=-1)
         if(app.App.GetInstance().IsMuted()):
             pygame.mixer.Channel(0).set_volume(0)
@@ -45,22 +46,17 @@ class GameSession(Scene):
         self.sceneVelocityOnDeath = None    #
 
         # Background
-        self.wallWidth = 50
-        wallTexture = pygame.image.load(RES_DIR + "img/lab/wall.png")
-        loopImgs = [pygame.image.load(RES_DIR + "img/lab/lab1.jpg"), pygame.image.load(RES_DIR + "img/lab/lab2.jpg"), pygame.image.load(RES_DIR + "img/lab/lab3.jpg"), pygame.image.load(RES_DIR + "img/lab/lab4.jpg")]
-        loopBg = Sprite(loopImgs[0], 0, 0, loopImgs[0].get_width(), DISPLAY_HEIGHT)
-        self.bgSprites = [Sprite(x, 0, 0, x.get_width(), DISPLAY_HEIGHT) for x in loopImgs]
-        for x in self.bgSprites:
-            wall = Sprite(wallTexture, x.GetSize()[0], 0, self.wallWidth, DISPLAY_HEIGHT)
-            x.AttachObject(wall)
-
-        self.bgCurrentNumber = 1
-        self.bg1 = self.bgSprites[0]
-        self.bg2 = self.bgSprites[1]
-        self.bg2.ChangeRelativePos((self.bg1.GetRect().right+self.wallWidth, 0))
-        self.bgLayer.AttachObject(self.bg1)
-        self.bgLayer.AttachObject(self.bg2)
-
+        self.nrLayers = 4
+        self.bgLayersSpeeds = [0, 0.5, 0.75, 1]   # Procente din viteza scenei
+        self.bgLayers = []
+        for i in range(self.nrLayers):
+            layerImg = pygame.image.load(RES_DIR + f"img/bg_layers/layer{i + 1}.png").convert_alpha()
+            layerSprite1 = Sprite(layerImg, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT)
+            layerSprite2 = Sprite(layerImg, DISPLAY_WIDTH, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT)
+            layerSprite1.AttachObject(layerSprite2)
+            self.bgLayer.AttachObject(layerSprite1)
+            self.bgLayers.append(layerSprite1)
+        
         # Caracter
         self.playerLives = 1
         self.ascentAcceleration = 1150
@@ -100,7 +96,7 @@ class GameSession(Scene):
 
         #Chenar negru
         self.chenar = Box(0, 0, 390, 32, (0, 0, 0))
-        self.chenar.SetAlphaLevel(130)
+        self.chenar.SetAlphaLevel(70)
         self.infoLayer.AttachObject(self.chenar)
 
         # Scor
@@ -162,18 +158,13 @@ class GameSession(Scene):
     
 
     def UpdateBackground(self, deltaTime: float) -> None:
-        bgXPos = self.bg1.GetRelativePos().x
-        bgWidth = self.bg1.GetSize()[0]
-        bgMoveAmount = self.sceneXVelocity * deltaTime
-        if bgXPos + bgMoveAmount <= -(bgWidth + self.wallWidth):
-            self.bgLayer.DetachObject(self.bg1)
-            self.bg1 = self.bg2
-            self.bgCurrentNumber = (self.bgCurrentNumber + 1) % len(self.bgSprites)
-            self.bg2 = self.bgSprites[self.bgCurrentNumber]
-            self.bg2.ChangeRelativePos((self.bg1.GetRect().right + self.wallWidth, 0))
-            self.bgLayer.AttachObject(self.bg2)
-        self.bg1.MoveBy((bgMoveAmount, 0))
-        self.bg2.MoveBy((bgMoveAmount, 0))
+        for i in range(self.nrLayers):
+            layerXPos = self.bgLayers[i].GetRelativePos().x
+            layerWidth = self.bgLayers[i].GetSize()[0]
+            moveAmount = self.sceneXVelocity * self.bgLayersSpeeds[i] * deltaTime
+            if layerXPos + moveAmount <= -layerWidth:
+                moveAmount += layerWidth
+            self.bgLayers[i].MoveBy((moveAmount, 0))
 
 
     def UpdateScore(self, deltaTime: float) -> None:
