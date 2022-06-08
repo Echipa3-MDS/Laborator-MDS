@@ -11,6 +11,7 @@ from framework.update_scheduler import UpdateScheduler
 from framework.events_manager import EventsManager
 from framework.animation import Animation
 from framework.constants import *
+from framework.box import Box
 import framework.app as app
 
 from game.obstacles.laser_rocket_wave import LaserRocketWave
@@ -24,31 +25,48 @@ class GameSession(Scene):
     def __init__(self) -> None:
         super().__init__()
         
+        self.bgLayer = RenderedObject(0, 0, 0, 0)    # Se vor atasa imagini de background
         self.gameLayer = RenderedObject(0, 0, 0, 0)  # Se vor atasa obiectele jocului (obstacole, jucator, ...)
         self.infoLayer = RenderedObject(0, 0, 0, 0)  # Se vor atasa obiecte utile utilizatorului (scor, butonul de pauza, ...)
+        self.AttachObject(self.bgLayer)
         self.AttachObject(self.gameLayer)
         self.AttachObject(self.infoLayer)
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound(RES_DIR + "audio/Arcade-Fantasy.mp3"), loops=-1)
+        if(app.App.GetInstance().IsMuted()):
+            pygame.mixer.Channel(0).set_volume(0)
+        else:
+             pygame.mixer.Channel(0).set_volume(0.1)
 
         # Miscarea scenei
-        self.sceneAcceleration = 0
+        self.sceneAcceleration = 2.5        # In doua minute se ajunge la velocitatea maxima
         self.sceneXVelocity = -250.0
-        self.sceneDeceleration = 100        # Folosite atunci cand jucatorul moare
+        self.maxSceneXVelocity = -550.0
+        self.sceneDeceleration = 150        # Folosite atunci cand jucatorul moare
         self.sceneVelocityOnDeath = None    #
 
         # Background
-        loopBgImage = pygame.image.load(RES_DIR + "loop_bg.png").convert()
-        loopBg1 = Sprite(loopBgImage, 0, 0, loopBgImage.get_width() * 1.5, DISPLAY_HEIGHT)
-        loopBg2 = Sprite(loopBgImage, loopBgImage.get_width() * 1.5, 0, loopBgImage.get_width() * 1.5, DISPLAY_HEIGHT)
-        loopBg1.AttachObject(loopBg2)
-        self.bg = loopBg1
-        self.gameLayer.AttachObject(self.bg)
+        self.wallWidth = 50
+        wallTexture = pygame.image.load(RES_DIR + "img/lab/wall.png")
+        loopImgs = [pygame.image.load(RES_DIR + "img/lab/lab1.jpg"), pygame.image.load(RES_DIR + "img/lab/lab2.jpg"), pygame.image.load(RES_DIR + "img/lab/lab3.jpg"), pygame.image.load(RES_DIR + "img/lab/lab4.jpg")]
+        loopBg = Sprite(loopImgs[0], 0, 0, loopImgs[0].get_width(), DISPLAY_HEIGHT)
+        self.bgSprites = [Sprite(x, 0, 0, x.get_width(), DISPLAY_HEIGHT) for x in loopImgs]
+        for x in self.bgSprites:
+            wall = Sprite(wallTexture, x.GetSize()[0], 0, self.wallWidth, DISPLAY_HEIGHT)
+            x.AttachObject(wall)
+
+        self.bgCurrentNumber = 1
+        self.bg1 = self.bgSprites[0]
+        self.bg2 = self.bgSprites[1]
+        self.bg2.ChangeRelativePos((self.bg1.GetRect().right+self.wallWidth, 0))
+        self.bgLayer.AttachObject(self.bg1)
+        self.bgLayer.AttachObject(self.bg2)
 
         # Caracter
         self.playerLives = 1
-        self.ascentAcceleration = 1100
-        self.gravitationalAcceleration = 1100
-        self.maxAscentSpeed = 550
-        self.maxFallSpeed = 550
+        self.ascentAcceleration = 1150
+        self.gravitationalAcceleration = 1150
+        self.maxAscentSpeed = 600
+        self.maxFallSpeed = 600
         self.playerYVelocity = 0.0
 
         self.playerWidth = 60
@@ -66,8 +84,8 @@ class GameSession(Scene):
         playerAscentFrame = pygame.image.load(RES_DIR + 'flying.bmp').convert_alpha()
         self.playerAscent = Sprite(playerAscentFrame, playerStartX, playerStartY, 60, 101)
         
-        playerDeadFrame = pygame.image.load(RES_DIR + "dead.bmp").convert_alpha()
-        self.playerDead = Sprite(playerDeadFrame, playerStartX, playerStartY, self.playerWidth, self.playerHeight)
+        playerDeadFrame = [pygame.image.load(RES_DIR + "dead.bmp").convert_alpha(), pygame.image.load(RES_DIR + "dead2.bmp").convert_alpha()]
+        self.playerDead = Animation(playerStartX, playerStartY, self.playerWidth, self.playerHeight, playerDeadFrame, frameTime)
         
         self.playerState = self.playerFall
         self.gameLayer.AttachObject(self.playerState)
@@ -80,24 +98,29 @@ class GameSession(Scene):
         self.obstacleWave = None
         self.transTimeElapsed = 0.0
 
+        #Chenar negru
+        self.chenar = Box(0, 0, 390, 32, (0, 0, 0))
+        self.chenar.SetAlphaLevel(130)
+        self.infoLayer.AttachObject(self.chenar)
+
         # Scor
         self.score = 0.0
-        self.scoreText = TextObject("0m", (255, 255, 255), "Arial", 26, 0, 0)
+        self.scoreText = TextObject("0m", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, 0, 0)
         self.infoLayer.AttachObject(self.scoreText)
 
         # Bani
         self.collectedCoins = 0
         coinImg = pygame.image.load(RES_DIR + 'coin/coin_01.png').convert_alpha()
-        coinIcon = Sprite(coinImg, self.scoreText.GetRect().right + 100, 0, 30, 30)
-        self.coinsText = TextObject("0", (255, 255, 255), "Arial", 26, coinIcon.GetRect().right + 10, 0)
+        coinIcon = Sprite(coinImg, self.scoreText.GetRect().right + 115, 0, 30, 30)
+        self.coinsText = TextObject("0", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, coinIcon.GetRect().right + 10, 0)
         self.infoLayer.AttachObject(self.coinsText)
         self.infoLayer.AttachObject(coinIcon)
 
         # Vieti caracter
         self.playerLives = 1
         heartImg = pygame.image.load(RES_DIR + 'heart.png').convert_alpha()
-        heartIcon = Sprite(heartImg, self.coinsText.GetRect().right + 100, 0, 30, 30)
-        self.playerLivesText = TextObject(str(self.playerLives), (255, 255, 255), 'Arial', 26, heartIcon.GetRect().right + 10, 0)
+        heartIcon = Sprite(heartImg, self.coinsText.GetRect().right + 115, 0, 30, 30)
+        self.playerLivesText = TextObject(str(self.playerLives), (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, heartIcon.GetRect().right + 10, 0)
         self.infoLayer.AttachObject(self.playerLivesText)
         self.infoLayer.AttachObject(heartIcon)
     
@@ -133,20 +156,29 @@ class GameSession(Scene):
 
     def UpdateSceneVelocity(self, deltaTime: float) -> None:
         self.sceneXVelocity -= self.sceneAcceleration * deltaTime
-
+        if abs(self.sceneXVelocity) >= abs(self.maxSceneXVelocity):
+            UpdateScheduler.GetInstance().UnscheduleUpdate(self.UpdateSceneVelocity)
+            self.sceneXVelocity = self.maxSceneXVelocity
+    
 
     def UpdateBackground(self, deltaTime: float) -> None:
-        bgXPos = self.bg.GetRelativePos().x
-        bgWidth = self.bg.GetSize()[0]
+        bgXPos = self.bg1.GetRelativePos().x
+        bgWidth = self.bg1.GetSize()[0]
         bgMoveAmount = self.sceneXVelocity * deltaTime
-        if bgXPos + bgMoveAmount <= -bgWidth:
-            bgMoveAmount += bgWidth
-        self.bg.MoveBy((bgMoveAmount, 0))
+        if bgXPos + bgMoveAmount <= -(bgWidth + self.wallWidth):
+            self.bgLayer.DetachObject(self.bg1)
+            self.bg1 = self.bg2
+            self.bgCurrentNumber = (self.bgCurrentNumber + 1) % len(self.bgSprites)
+            self.bg2 = self.bgSprites[self.bgCurrentNumber]
+            self.bg2.ChangeRelativePos((self.bg1.GetRect().right + self.wallWidth, 0))
+            self.bgLayer.AttachObject(self.bg2)
+        self.bg1.MoveBy((bgMoveAmount, 0))
+        self.bg2.MoveBy((bgMoveAmount, 0))
 
 
     def UpdateScore(self, deltaTime: float) -> None:
         moveAmount = -self.sceneXVelocity * deltaTime
-        self.score += moveAmount / 25
+        self.score += moveAmount / 40
         self.scoreText.ChangeText(str(int(self.score)) + 'm')
 
 
@@ -186,6 +218,7 @@ class GameSession(Scene):
         # Testeaza coliziunea cu obstacole
         if self.obstacleWave is not None and self.obstacleWave.CheckCollision(self.playerPixelMask, playerRect):
             self.__ChangePlayerState(self.playerDead)
+            self.playerDead.PlayAnimation()
             self.sceneVelocityOnDeath = self.sceneXVelocity
             scheduler = UpdateScheduler.GetInstance()
             scheduler.UnscheduleUpdate(self.UpdateSceneVelocity)
@@ -259,6 +292,7 @@ class GameSession(Scene):
 
     def OnButtonPause(self, event: pygame.event.Event) -> None:
         if self.pauseButton.CollidesWithPoint(event.pos):
+            self.pauseButton.ClickedSound(app.App.GetInstance().IsMuted())
             displayState = pygame.display.get_surface().copy()
             pauseScene = pm.PauseMenu(self, displayState)
             app.App.GetInstance().PlayNewScene(pauseScene)

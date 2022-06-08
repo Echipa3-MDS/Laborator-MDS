@@ -2,7 +2,7 @@ from typing import Tuple
 import pygame
 
 from framework.rendered_object import RenderedObject
-
+from framework.constants import RES_DIR
 
 class Button(RenderedObject):
 
@@ -17,7 +17,8 @@ class Button(RenderedObject):
         font: str = None,
         fontSize: int = 12,
         bgImagePath: str = None,
-        bgColor: pygame.Color = None
+        bgColor: pygame.Color = None,
+        sound: str = RES_DIR + "audio/Click.ogg"
     ) -> None:
         super().__init__(posX, posY, width, height)
 
@@ -42,6 +43,9 @@ class Button(RenderedObject):
         if bgImagePath is not None:
             image = pygame.image.load(bgImagePath)
             self.bgImage = pygame.transform.scale(image, self._frame.size)
+        if sound is not None:
+            self.sound = pygame.mixer.Sound(sound)
+
 
     
     def ChangeSize(self, width: int, height: int) -> None:
@@ -95,6 +99,10 @@ class Button(RenderedObject):
     def CollidesWithPoint(self, point: Tuple[int, int]) -> bool:
         return self._frame.collidepoint(point)
 
+    def ClickedSound(self, muted) -> None:
+        if(not muted):
+            self.sound.play()
+            
 
     def _Draw(self) -> None:
         display = pygame.display.get_surface()
