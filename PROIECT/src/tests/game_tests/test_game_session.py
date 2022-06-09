@@ -3,6 +3,7 @@ import pygame
 
 import framework.app as app
 from framework.constants import *
+from framework.sprite import Sprite
 from framework.update_scheduler import UpdateScheduler
 from game.game_session import GameSession
 from game.game_over import GameOver
@@ -35,9 +36,20 @@ class TestGameSession(unittest.TestCase):
     def test_UpdateBackground(self):
         gameSession = GameSession()
         gameSession.sceneXVelocity = -200
-        gameSession.bg.ChangeRelativePos((100, 100))
+        gameSession.bgLayersSpeeds = [1, 0.75, 0.5, 0]
+        gameSession.bgLayers = [
+            Sprite(pygame.Surface((1, 1)), 0, 0, 1000, 1000),
+            Sprite(pygame.Surface((1, 1)), 0, 0, 1000, 1000),
+            Sprite(pygame.Surface((1, 1)), 0, 0, 1000, 1000),
+            Sprite(pygame.Surface((1, 1)), 0, 0, 1000, 1000)
+        ]
         gameSession.UpdateBackground(1)
-        self.assertEqual(gameSession.bg.GetRelativePos().x, -100)
+        self.assertTrue(
+            gameSession.bgLayers[0].GetRelativePos().x == -200 and
+            gameSession.bgLayers[1].GetRelativePos().x == -150 and
+            gameSession.bgLayers[2].GetRelativePos().x == -100 and
+            gameSession.bgLayers[3].GetRelativePos().x == 0
+        )
     
 
     def test_UpdateScore(self):
