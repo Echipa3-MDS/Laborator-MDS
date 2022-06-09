@@ -137,12 +137,13 @@ class GameSession(Scene):
         EventsManager.GetInstance().AddListener(pygame.MOUSEBUTTONDOWN, self.OnButtonPause)
 
         scheduler = UpdateScheduler.GetInstance()
-        scheduler.ScheduleUpdate(self.UpdateSceneVelocity)
         scheduler.ScheduleUpdate(self.UpdateBackground)
         scheduler.ScheduleUpdate(self.UpdateScore)
         if self.playerState is self.playerDead:
             scheduler.ScheduleUpdate(self.UpdatePlayerDying)
+            self.playerDead.PlayAnimation()
         else:
+            scheduler.ScheduleUpdate(self.UpdateSceneVelocity)
             scheduler.ScheduleUpdate(self.UpdatePlayer)
         if self.obstacleWave is None:
             scheduler.ScheduleUpdate(self.WaveTransitionAgent)
