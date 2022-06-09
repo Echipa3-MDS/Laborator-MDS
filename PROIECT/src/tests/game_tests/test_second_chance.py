@@ -11,7 +11,7 @@ class TestSecondChance(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        print('\nTesting Pause Menu...\n')
+        print('\nTesting Second Chance Interface...\n')
         pygame.init()
         pygame.display.set_mode((800, 600))
 
