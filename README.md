@@ -1,3 +1,3 @@
 # Laborator-MDS
 
-[Demo](../README.md)
+[Demo](../blob/master/)
