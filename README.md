@@ -1,3 +1,3 @@
 # Laborator-MDS
 
-[Demo](../blob/master/)
+[Demo](../)
