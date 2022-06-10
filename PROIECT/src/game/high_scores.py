@@ -1,4 +1,5 @@
 from framework.constants import *
+from os.path import exists
 
 class HighScores:
     
@@ -12,13 +13,18 @@ class HighScores:
 
     @classmethod
     def GetScoreDict(cls) -> dict:
-        highScoreFile = open(RES_DIR + 'high_scores.txt', 'r')
-        continut = highScoreFile.read().strip().split('\n')
-        highScoreFile.close()
+        if exists(RES_DIR + 'high_scores.txt'):
+            highScoreFile = open(RES_DIR + 'high_scores.txt', 'r')
+            continut = highScoreFile.read().strip().split('\n')
+            highScoreFile.close()
 
-        lista = {linie.split()[0] : int(linie.split()[1]) for linie in continut}
-        lista = dict(sorted(lista.items(), key=lambda item: -item[1]))
-        
+            if continut[0] != "":
+                lista = {linie.split()[0] : int(linie.split()[1]) for linie in continut}
+                lista = dict(sorted(lista.items(), key=lambda item: -item[1]))
+            else:
+                lista = {}
+        else:
+            lista = {}
         return lista
     
     @classmethod
