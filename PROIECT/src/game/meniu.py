@@ -1,4 +1,5 @@
 import pygame
+from os.path import join as pathJoin
 
 from framework.scene import Scene
 from framework.constants import *
@@ -21,7 +22,7 @@ class Meniu(Scene):
 
         appObj = app.App.GetInstance()
 
-        logoImg = pygame.image.load(RES_DIR + "img\logo.png")
+        logoImg = pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "title.png"))
         logoWidth = 350
         logoHeight = 175
         logoPosX = (DISPLAY_WIDTH / 11)*8 - logoWidth / 2
@@ -35,11 +36,11 @@ class Meniu(Scene):
         posY = 200
 
         textColor = (255, 255, 255)
-        font = RES_DIR + "font\Happy School.ttf"
+        font = pathJoin(RES_FONTS_DIR, "Happy School.ttf")
         fontSize = 40
         bgColor = (0, 0, 0)
-        bgImage = RES_DIR + "img/ButtonBg.png"
-        self.ChangeBgImage(pygame.transform.scale(pygame.image.load(RES_DIR + "img/bgconcept.png"),(DISPLAY_WIDTH,DISPLAY_HEIGHT)))
+        bgImage = pathJoin(RES_STATIC_TEXTURES_DIR, "button.png")
+        self.ChangeBgImage(pygame.transform.scale(pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "main_menu_bg.png")),(DISPLAY_WIDTH,DISPLAY_HEIGHT)))
         borderRadius = 5
         buttonTop = 20
         alpha = 255
@@ -149,8 +150,8 @@ class Meniu(Scene):
         muteButtonY = 10
         self.buttonMute = Button(muteButtonX, muteButtonY, muteButtonW, muteButtonH)
         self.AttachObject(self.buttonMute)
-        self.mutedIcon = pygame.transform.scale(pygame.image.load(RES_DIR + "no-sound.png"), (muteButtonW, muteButtonH))
-        self.unmutedIcon = pygame.transform.scale(pygame.image.load(RES_DIR + "sound.png"), (muteButtonW, muteButtonH))
+        self.mutedIcon = pygame.transform.scale(pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "mute", "no-sound.png")), (muteButtonW, muteButtonH))
+        self.unmutedIcon = pygame.transform.scale(pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "mute", "sound.png")), (muteButtonW, muteButtonH))
         if app.App.GetInstance().IsMuted():
             self.buttonMute.SetBgImage(self.mutedIcon)
         else:
@@ -244,5 +245,5 @@ class Meniu(Scene):
                 appInst = app.App.GetInstance()
                 appInst.SwitchMuteOption()
                 if(not appInst.IsMuted()):
-                    pygame.mixer.Sound(RES_DIR + "audio/Click.ogg").play()
+                    pygame.mixer.Sound(pathJoin(RES_AUDIO_DIR, "Click.ogg")).play()
                 self.buttonMute.SetBgImage(self.mutedIcon if appInst.IsMuted() else self.unmutedIcon)

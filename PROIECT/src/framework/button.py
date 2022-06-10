@@ -1,8 +1,9 @@
 from typing import Tuple
+from os.path import join as pathJoin
 import pygame
 
 from framework.rendered_object import RenderedObject
-from framework.constants import RES_DIR
+from framework.constants import RES_AUDIO_DIR
 
 class Button(RenderedObject):
 
@@ -18,7 +19,7 @@ class Button(RenderedObject):
         fontSize: int = 12,
         bgImagePath: str = None,
         bgColor: pygame.Color = None,
-        sound: str = RES_DIR + "audio/Click.ogg"
+        sound: str = pathJoin(RES_AUDIO_DIR, "Click.ogg")
     ) -> None:
         super().__init__(posX, posY, width, height)
 
