@@ -1,3 +1,3 @@
 # Laborator-MDS
 
-[Demo](../MDSDemo.mp4)
+[Demo](../blob/master/masterMDSDemo.mp4)
