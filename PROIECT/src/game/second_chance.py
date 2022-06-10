@@ -1,4 +1,5 @@
 import pygame
+from os.path import join as pathJoin 
 
 from framework.scene import Scene
 from framework.text_object import TextObject
@@ -32,20 +33,23 @@ class SecondChanceInterface(Scene):
         gameFrameBg.blit(darkBgSurface, (0, 0))
         self.ChangeBgImage(gameFrameBg)
 
+        textFontPath = pathJoin(RES_FONTS_DIR, "Happy School.ttf")
+        buttonBgPath = pathJoin(RES_STATIC_TEXTURES_DIR, "button.png")
+
         buyQuestionText = f"Cumperi inca o viata? ({self.newLifePrice} monede)"
-        self.buyQuestion = TextObject(buyQuestionText, (255, 255, 255), RES_DIR + "font\Happy School.ttf", 30, 0, 0)
+        self.buyQuestion = TextObject(buyQuestionText, (255, 255, 255), textFontPath, 30, 0, 0)
         bqRect = self.buyQuestion.GetRect()
         self.buyQuestion.ChangeRelativePos((DISPLAY_WIDTH / 2 - bqRect.width / 2, DISPLAY_HEIGHT / 2 - bqRect.height * 2))
         self.AttachObject(self.buyQuestion)
 
         buttonWidth = 200
         buttonHeight = 50
-        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpara', (255, 255, 255), RES_DIR + "font\Happy School.ttf", 30, RES_DIR + "img/ButtonBg.png", (255, 224, 0))
-        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Iesire', (255, 255, 255), RES_DIR + "font\Happy School.ttf", 30, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
+        self.buttonBuyLife = Button(DISPLAY_WIDTH / 2 - 30 - buttonWidth, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Cumpara', (255, 255, 255), textFontPath, 30, buttonBgPath, (255, 224, 0))
+        self.buttonQuit = Button(DISPLAY_WIDTH / 2 + 30, DISPLAY_HEIGHT / 2 + 10, buttonWidth, buttonHeight, 'Iesire', (255, 255, 255), textFontPath, 30, buttonBgPath, (216, 216, 216))
         self.AttachObject(self.buttonBuyLife)
         self.AttachObject(self.buttonQuit)
 
-        self.timer = TextObject(str(self.givenTime), (255, 255, 255), RES_DIR + "font\Happy School.ttf", 40, 0, 0)
+        self.timer = TextObject(str(self.givenTime), (255, 255, 255), textFontPath, 40, 0, 0)
         timerRect = self.timer.GetRect()
         self.timer.ChangeRelativePos((DISPLAY_WIDTH / 2 - timerRect.width / 2, DISPLAY_HEIGHT / 2 + self.buttonQuit.GetRect().height + 30))
         self.AttachObject(self.timer)

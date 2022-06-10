@@ -1,5 +1,5 @@
 from framework.constants import *
-from os.path import exists
+import os
 
 class HighScores:
     
@@ -13,8 +13,9 @@ class HighScores:
 
     @classmethod
     def GetScoreDict(cls) -> dict:
-        if exists(RES_DIR + 'high_scores.txt'):
-            highScoreFile = open(RES_DIR + 'high_scores.txt', 'r')
+        pathToFile = os.path.join(os.path.expanduser('~'), 'Documents', 'Joc MDS', 'high_scores.txt')
+        if path.exists(pathToFile):
+            highScoreFile = open(pathToFile, 'r')
             continut = highScoreFile.read().strip().split('\n')
             highScoreFile.close()
 
@@ -29,7 +30,18 @@ class HighScores:
     
     @classmethod
     def SaveScoreDict(cls, dictList : dict) -> None:
-        highScoreFile = open(RES_DIR + 'high_scores.txt', 'w')
+        # Creeaza directorul Documents in caz ca nu exista.
+        documentsPath = os.path.join(os.path.expanduser('~'), 'Documents')
+        if not os.path.isdir(documentsPath):
+            os.mkdir(documentsPath)
+        
+        # Creeaza directorul corespunzator aplicatiei in caz ca nu exista.
+        appDocumentsPath = os.path.join(documentsPath, 'Joc MDS')
+        if not os.path.isdir(appDocumentsPath):
+            os.mkdir(appDocumentsPath)
+
+        pathToFile = path.join(appDocumentsPath, 'high_scores.txt')
+        highScoreFile = open(pathToFile, 'w')
         for player in dictList:
             scor = dictList[player]
             highScoreFile.write(player + ' ' + str(scor) + '\n')

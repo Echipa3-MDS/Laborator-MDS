@@ -1,5 +1,6 @@
 import pygame
 import random
+from os.path import join as pathJoin
 from time import time
 
 from framework.rendered_object import RenderedObject
@@ -32,11 +33,13 @@ class GameSession(Scene):
         self.AttachObject(self.gameLayer)
         self.AttachObject(self.infoLayer)
 
-        pygame.mixer.Channel(0).play(pygame.mixer.Sound(RES_DIR + "audio/Arcade-Fantasy.mp3"), loops=-1)
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound(pathJoin(RES_AUDIO_DIR, "Arcade-Fantasy.mp3")), loops=-1)
         if(app.App.GetInstance().IsMuted()):
             pygame.mixer.Channel(0).set_volume(0)
         else:
              pygame.mixer.Channel(0).set_volume(0.1)
+
+        infoLayerTextFont = pathJoin(RES_FONTS_DIR, "Happy School.ttf")
 
         # Miscarea scenei
         self.sceneAcceleration = 2.5        # In doua minute se ajunge la velocitatea maxima
@@ -50,7 +53,8 @@ class GameSession(Scene):
         self.bgLayersSpeeds = [0, 0.5, 0.75, 1]   # Procente din viteza scenei
         self.bgLayers = []
         for i in range(self.nrLayers):
-            layerImg = pygame.image.load(RES_DIR + f"img/bg_layers/layer{i + 1}.png").convert_alpha()
+            layerPath = pathJoin(RES_STATIC_TEXTURES_DIR, "bg_layers", f"layer{i + 1}.png")
+            layerImg = pygame.image.load(layerPath).convert_alpha()
             layerSprite1 = Sprite(layerImg, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT)
             layerSprite2 = Sprite(layerImg, DISPLAY_WIDTH, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT)
             layerSprite1.AttachObject(layerSprite2)
@@ -71,16 +75,22 @@ class GameSession(Scene):
         playerStartY = DISPLAY_HEIGHT / 2 - self.playerHeight / 2
         
         frameTime = 0.15  # Timpul dintre cadrele animatiei (in secunde)
-        playerWalkFrames = [pygame.image.load(RES_DIR + "walk1.bmp").convert_alpha(), pygame.image.load(RES_DIR + "walk2.bmp").convert_alpha()]
+        playerWalkFrames = [
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, "player_walk", "walk1.bmp")).convert_alpha(), 
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, "player_walk", "walk2.bmp")).convert_alpha()
+        ]
         self.playerWalk = Animation(playerStartX, playerStartY, self.playerWidth, self.playerHeight, playerWalkFrames, frameTime)
         
-        playerFallFrame = pygame.image.load(RES_DIR + 'beggining.bmp').convert_alpha()
+        playerFallFrame = pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "player", "falling.bmp")).convert_alpha()
         self.playerFall = Sprite(playerFallFrame, playerStartX, playerStartY, self.playerWidth, self.playerHeight)
         
-        playerAscentFrame = pygame.image.load(RES_DIR + 'flying.bmp').convert_alpha()
+        playerAscentFrame = pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "player", "ascending.bmp")).convert_alpha()
         self.playerAscent = Sprite(playerAscentFrame, playerStartX, playerStartY, 60, 101)
         
-        playerDeadFrame = [pygame.image.load(RES_DIR + "dead.bmp").convert_alpha(), pygame.image.load(RES_DIR + "dead2.bmp").convert_alpha()]
+        playerDeadFrame = [
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, "player_dead", "dead_1.bmp")).convert_alpha(), 
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, "player_dead", "dead_2.bmp")).convert_alpha()
+        ]
         self.playerDead = Animation(playerStartX, playerStartY, self.playerWidth, self.playerHeight, playerDeadFrame, frameTime)
         
         self.playerState = self.playerFall
@@ -101,27 +111,27 @@ class GameSession(Scene):
 
         # Scor
         self.score = 0.0
-        self.scoreText = TextObject("0m", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, 0, 0)
+        self.scoreText = TextObject("0m", (255, 255, 255), infoLayerTextFont, 35, 0, 0)
         self.infoLayer.AttachObject(self.scoreText)
 
         # Bani
         self.collectedCoins = 0
-        coinImg = pygame.image.load(RES_DIR + 'coin/coin_01.png').convert_alpha()
+        coinImg = pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, "coin", "coin_01.png")).convert_alpha()
         coinIcon = Sprite(coinImg, self.scoreText.GetRect().right + 115, 0, 30, 30)
-        self.coinsText = TextObject("0", (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, coinIcon.GetRect().right + 10, 0)
+        self.coinsText = TextObject("0", (255, 255, 255), infoLayerTextFont, 35, coinIcon.GetRect().right + 10, 0)
         self.infoLayer.AttachObject(self.coinsText)
         self.infoLayer.AttachObject(coinIcon)
 
         # Vieti caracter
         self.playerLives = 1
-        heartImg = pygame.image.load(RES_DIR + 'heart.png').convert_alpha()
+        heartImg = pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "heart.png")).convert_alpha()
         heartIcon = Sprite(heartImg, self.coinsText.GetRect().right + 115, 0, 30, 30)
-        self.playerLivesText = TextObject(str(self.playerLives), (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, heartIcon.GetRect().right + 10, 0)
+        self.playerLivesText = TextObject(str(self.playerLives), (255, 255, 255), infoLayerTextFont, 35, heartIcon.GetRect().right + 10, 0)
         self.infoLayer.AttachObject(self.playerLivesText)
         self.infoLayer.AttachObject(heartIcon)
     
         # Buton pauza
-        pIconPath = RES_DIR + 'pause.png'
+        pIconPath = pathJoin(RES_STATIC_TEXTURES_DIR, "pause.png")
         pIconW = 50
         pIconH = 50
         pIconX = DISPLAY_WIDTH - pIconW - 10

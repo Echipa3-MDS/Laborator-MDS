@@ -1,4 +1,5 @@
 import pygame
+from os.path import join as pathJoin
 
 from framework.scene import Scene
 from framework.constants import *
@@ -7,7 +8,6 @@ from framework.events_manager import EventsManager
 from framework.button import Button
 from framework.sprite import Sprite
 from framework.text_object import TextObject
-from framework.rendered_object import RenderedObject
 
 from game.high_scores import HighScores
 import framework.app as app
@@ -28,7 +28,7 @@ class GameOver(Scene):
 
         marginTop = 40
 
-        gameOverImg = pygame.image.load(RES_DIR + "img/GameOver.png")
+        gameOverImg = pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "game_over.png"))
         GOIWidth = 400
         GOIHeight = 200
         GOIPosX = DISPLAY_WIDTH / 2 - GOIWidth / 2
@@ -38,7 +38,7 @@ class GameOver(Scene):
 
         self.GOI = Sprite(gameOverImg, GOIPosX, GOIPosY, GOIWidth, GOIHeight)
 
-        self.font = RES_DIR + "font\Happy School.ttf"
+        self.font = pathJoin(RES_FONTS_DIR, "Happy School.ttf")
         self.fontSize = 40
         self.textColor = (0, 0, 0)
 
@@ -87,9 +87,9 @@ class GameOver(Scene):
         self.buttonPosY = self.top + marginTop
         self.buttonTextColor = (255, 255, 255)
  
-        self.butonSave = Button(self.buttonPosX + self.buttonWidth / 1.5, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, 33, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
-
-        self.butonIesire = Button(self.buttonPosX - self.buttonWidth / 1.5, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 33, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
+        buttonBgPath = pathJoin(RES_STATIC_TEXTURES_DIR, "button.png")
+        self.butonSave = Button(self.buttonPosX + self.buttonWidth / 1.5, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, 33, buttonBgPath, bgColor=(0, 0, 0))
+        self.butonIesire = Button(self.buttonPosX - self.buttonWidth / 1.5, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 33, buttonBgPath, bgColor=(0, 0, 0))
 
 
         self.AttachObject(self.darkOverlay)
@@ -156,7 +156,8 @@ class GameOver(Scene):
                 self.DetachObject(self.butonSave)
                 self.DetachObject(self.butonIesire)
 
-                self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 33, RES_DIR + "img/ButtonBg.png",bgColor=(0, 0, 0))
+                buttonBgPath = pathJoin(RES_STATIC_TEXTURES_DIR, "button.png")
+                self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 33, buttonBgPath,bgColor=(0, 0, 0))
                 self.AttachObject(self.butonIesire)
 
                 self.DetachObject(self.inputBox)
@@ -203,7 +204,8 @@ class GameOver(Scene):
                     self.DetachObject(self.butonSave)
                     self.DetachObject(self.butonIesire)
 
-                    self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, self.fontSize, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
+                    buttonBgPath = pathJoin(RES_STATIC_TEXTURES_DIR, "button.png")
+                    self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, self.fontSize, buttonBgPath, bgColor=(0, 0, 0))
                     self.AttachObject(self.butonIesire)
 
                     self.DetachObject(self.inputBox)

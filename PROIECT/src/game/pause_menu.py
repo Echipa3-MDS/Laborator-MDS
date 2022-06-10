@@ -1,4 +1,5 @@
 import pygame
+from os.path import join as pathJoin
 
 from framework.events_manager import EventsManager
 from framework.scene import Scene
@@ -24,9 +25,11 @@ class PauseMenu(Scene):
         buttonH = 60
         buttonX = DISPLAY_WIDTH / 2 - buttonW / 2
         yCenter = DISPLAY_HEIGHT / 2
-        self.buttonResume = Button(buttonX, yCenter - buttonH - 7, buttonW, buttonH, 'Continuare joc', (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
+        buttonTextFontPath = pathJoin(RES_FONTS_DIR, "Happy School.ttf")
+        buttonBgPath = pathJoin(RES_STATIC_TEXTURES_DIR, "button.png")
+        self.buttonResume = Button(buttonX, yCenter - buttonH - 7, buttonW, buttonH, 'Continuare joc', (255, 255, 255), buttonTextFontPath, 35, buttonBgPath, (216, 216, 216))
         self.AttachObject(self.buttonResume)
-        self.buttonQuit = Button(buttonX, yCenter + 7, buttonW, buttonH, 'Iesire', (255, 255, 255), RES_DIR + "font\Happy School.ttf", 35, RES_DIR + "img/ButtonBg.png", (216, 216, 216))
+        self.buttonQuit = Button(buttonX, yCenter + 7, buttonW, buttonH, 'Iesire', (255, 255, 255), buttonTextFontPath, 35, buttonBgPath, (216, 216, 216))
         self.AttachObject(self.buttonQuit)
         
         muteButtonW = 50
@@ -35,8 +38,8 @@ class PauseMenu(Scene):
         muteButtonY = 10
         self.buttonMute = Button(muteButtonX, muteButtonY, muteButtonW, muteButtonH)
         self.AttachObject(self.buttonMute)
-        self.mutedIcon = pygame.transform.scale(pygame.image.load(RES_DIR + "no-sound.png"), (muteButtonW, muteButtonH))
-        self.unmutedIcon = pygame.transform.scale(pygame.image.load(RES_DIR + "sound.png"), (muteButtonW, muteButtonH))
+        self.mutedIcon = pygame.transform.scale(pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "mute", "no-sound.png")), (muteButtonW, muteButtonH))
+        self.unmutedIcon = pygame.transform.scale(pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, "mute", "sound.png")), (muteButtonW, muteButtonH))
         if app.App.GetInstance().IsMuted():
             self.buttonMute.SetBgImage(self.mutedIcon)
         else:
@@ -61,7 +64,7 @@ class PauseMenu(Scene):
             appInst = app.App.GetInstance()
             appInst.SwitchMuteOption()
             if(not appInst.IsMuted()):
-                pygame.mixer.Sound(RES_DIR + "audio/Click.ogg").play()
+                pygame.mixer.Sound(pathJoin(RES_AUDIO_DIR, "Click.ogg")).play()
             pygame.mixer.Channel(0).set_volume(0 if appInst.IsMuted() else 0.1)
             self.buttonMute.SetBgImage(self.mutedIcon if appInst.IsMuted() else self.unmutedIcon)
     
