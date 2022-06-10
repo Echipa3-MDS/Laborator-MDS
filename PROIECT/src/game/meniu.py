@@ -77,24 +77,40 @@ class Meniu(Scene):
         self.instructionBox.AttachObject(self.inExitButton)
 
         highScore = HighScores.GetInstance()
-        textHighScore = highScore.GetHighScoreString(10)
-        liniHighScore = textHighScore.strip().split('\n')
-        liniHighScore[-1] += ' '
+        dictHS = highScore.GetHighScore()
 
         hsTop = 10
         hsFontSize = 20
-        
-        for it, linie in enumerate(liniHighScore):
-            fontT = pygame.font.SysFont('arial', 20)
+
+        if dictHS != {}:
+            textHighScore = highScore.GetHighScoreString(10)
+            liniHighScore = textHighScore.strip().split('\n')
+            liniHighScore[-1] += ' '
+            
+            for it, linie in enumerate(liniHighScore):
+                fontT = pygame.font.SysFont('arial', 20)
+                textSurface = fontT.render(linie, True, textColor)
+                textWidth = textSurface.get_width()
+                textHeight = textSurface.get_height()
+
+                linieY = hsTop + textHeight
+                linieX = hsWidth / 2 - textWidth / 2
+
+                textHSObject = TextObject(linie, (255, 255, 255), 'arial', 20, linieX, it * (linieY))
+                self.scoreBoard.AttachObject(textHSObject)
+        else:
+            linie = "Nu există scoruri înregistrate."
+            fontT = pygame.font.SysFont('arial', 40)
             textSurface = fontT.render(linie, True, textColor)
             textWidth = textSurface.get_width()
             textHeight = textSurface.get_height()
 
-            linieY = hsTop + textHeight
+            linieY = hsHeight / 2 - textHeight / 2
             linieX = hsWidth / 2 - textWidth / 2
 
-            textHSObject = TextObject(linie, (255, 255, 255), 'arial', 20, linieX, it * (linieY))
+            textHSObject = TextObject(linie, (255, 255, 255), 'arial', 40, linieX, linieY)
             self.scoreBoard.AttachObject(textHSObject)
+
 
         textInstructiuni = """
                             Instrucțiuni
