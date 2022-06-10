@@ -29,12 +29,12 @@ class GameOver(Scene):
         marginTop = 40
 
         gameOverImg = pygame.image.load(RES_DIR + "img/GameOver.png")
-        GOIWidth = 300
-        GOIHeight = 150
+        GOIWidth = 400
+        GOIHeight = 200
         GOIPosX = DISPLAY_WIDTH / 2 - GOIWidth / 2
         GOIPosY = self.top + marginTop
 
-        self.top += GOIPosY + GOIHeight
+        self.top += GOIPosY + GOIHeight - 30
 
         self.GOI = Sprite(gameOverImg, GOIPosX, GOIPosY, GOIWidth, GOIHeight)
 
@@ -81,15 +81,15 @@ class GameOver(Scene):
 
         self.inputBoxActive = False
 
-        self.buttonWidth = 275
-        self.buttonHeight = 65
+        self.buttonWidth = 240
+        self.buttonHeight = 60
         self.buttonPosX = DISPLAY_WIDTH / 2 - self.buttonWidth / 2
         self.buttonPosY = self.top + marginTop
         self.buttonTextColor = (255, 255, 255)
+ 
+        self.butonSave = Button(self.buttonPosX + self.buttonWidth / 1.5, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, 33, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
 
-        self.butonSave = Button(self.buttonPosX + self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Salveaza scor', self.buttonTextColor, self.font, 38, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
-
-        self.butonIesire = Button(self.buttonPosX - self.buttonWidth, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 38, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
+        self.butonIesire = Button(self.buttonPosX - self.buttonWidth / 1.5, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 33, RES_DIR + "img/ButtonBg.png", bgColor=(0, 0, 0))
 
 
         self.AttachObject(self.darkOverlay)
@@ -156,7 +156,7 @@ class GameOver(Scene):
                 self.DetachObject(self.butonSave)
                 self.DetachObject(self.butonIesire)
 
-                self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, self.fontSize, RES_DIR + "img/ButtonBg.png",bgColor=(0, 0, 0))
+                self.butonIesire = Button(self.buttonPosX, self.buttonPosY, self.buttonWidth, self.buttonHeight, 'Iesire', self.buttonTextColor, self.font, 33, RES_DIR + "img/ButtonBg.png",bgColor=(0, 0, 0))
                 self.AttachObject(self.butonIesire)
 
                 self.DetachObject(self.inputBox)
