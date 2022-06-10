@@ -85,7 +85,7 @@ class Meniu(Scene):
         hsFontSize = 20
         
         for it, linie in enumerate(liniHighScore):
-            fontT = pygame.font.SysFont(font, 30)
+            fontT = pygame.font.SysFont('arial', 20)
             textSurface = fontT.render(linie, True, textColor)
             textWidth = textSurface.get_width()
             textHeight = textSurface.get_height()
@@ -93,7 +93,7 @@ class Meniu(Scene):
             linieY = hsTop + textHeight
             linieX = hsWidth / 2 - textWidth / 2
 
-            textHSObject = TextObject(linie, (255, 255, 255), 'arial', 30, linieX, it * (linieY))
+            textHSObject = TextObject(linie, (255, 255, 255), 'arial', 20, linieX, it * (linieY))
             self.scoreBoard.AttachObject(textHSObject)
 
         textInstructiuni = """
