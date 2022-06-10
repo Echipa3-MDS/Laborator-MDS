@@ -1,4 +1,3 @@
-from matplotlib.pyplot import clabel
 import pygame
 
 
