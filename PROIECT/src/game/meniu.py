@@ -99,8 +99,8 @@ class Meniu(Scene):
                 textHSObject = TextObject(linie, (255, 255, 255), 'arial', 20, linieX, it * (linieY))
                 self.scoreBoard.AttachObject(textHSObject)
         else:
-            linie = "Nu exista scoruri"
-            fontT = pygame.font.SysFont('arial', 60)
+            linie = "Nu există scoruri înregistrate."
+            fontT = pygame.font.SysFont('arial', 40)
             textSurface = fontT.render(linie, True, textColor)
             textWidth = textSurface.get_width()
             textHeight = textSurface.get_height()
@@ -108,7 +108,7 @@ class Meniu(Scene):
             linieY = hsHeight / 2 - textHeight / 2
             linieX = hsWidth / 2 - textWidth / 2
 
-            textHSObject = TextObject(linie, (255, 255, 255), 'arial', 60, linieX, linieY)
+            textHSObject = TextObject(linie, (255, 255, 255), 'arial', 40, linieX, linieY)
             self.scoreBoard.AttachObject(textHSObject)
 
 
