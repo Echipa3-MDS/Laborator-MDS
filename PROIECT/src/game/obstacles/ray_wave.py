@@ -1,5 +1,6 @@
 import pygame
 import random
+from os.path import join as pathJoin
 
 from framework.sprite import Sprite
 from framework.constants import *
@@ -12,9 +13,9 @@ class RayWave:
         self.gameScene = gameScene
 
         self.rayHeight = 40
-        self.rayOff = pygame.image.load(RES_DIR + 'laser_off.bmp').convert_alpha()
+        self.rayOff = pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, 'beam', 'beam_off.bmp')).convert_alpha()
         self.rayOffWidth = 47
-        self.rayOn = pygame.image.load(RES_DIR + 'laser_on.bmp').convert_alpha()
+        self.rayOn = pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, 'beam', 'beam_on.bmp')).convert_alpha()
         self.rayOnWidth = self.rayOn.get_width() + 6
 
         self.rayOffDuration = 2.5

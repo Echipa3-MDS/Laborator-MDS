@@ -1,4 +1,5 @@
 import pygame
+from os.path import join as pathJoin
 
 from framework.animation import Animation
 from framework.rendered_object import RenderedObject
@@ -7,9 +8,10 @@ from framework.constants import *
 
 class CoinMatrix(RenderedObject):
     
-    coinFrames = None
     coinWidth = 30
     coinHeight = 30
+    nrCoinFrames = 8
+    coinFrames = None
 
     def __init__(self, posX: int, posY: int, width: int, height: int) -> None:
         super().__init__(posX, posY, width, height)
@@ -62,12 +64,5 @@ class CoinMatrix(RenderedObject):
     def __LoadCoinFrames(self) -> None:
         if CoinMatrix.coinFrames is None:
             CoinMatrix.coinFrames = [
-                pygame.image.load(RES_DIR + 'coin/coin_01.png').convert_alpha(),
-                pygame.image.load(RES_DIR + 'coin/coin_02.png').convert_alpha(),
-                pygame.image.load(RES_DIR + 'coin/coin_03.png').convert_alpha(),
-                pygame.image.load(RES_DIR + 'coin/coin_04.png').convert_alpha(),
-                pygame.image.load(RES_DIR + 'coin/coin_05.png').convert_alpha(),
-                pygame.image.load(RES_DIR + 'coin/coin_06.png').convert_alpha(),
-                pygame.image.load(RES_DIR + 'coin/coin_07.png').convert_alpha(),
-                pygame.image.load(RES_DIR + 'coin/coin_08.png').convert_alpha()
+                pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, 'coin', f'coin_0{i + 1}.png')).convert_alpha() for i in range(CoinMatrix.nrCoinFrames)
             ]

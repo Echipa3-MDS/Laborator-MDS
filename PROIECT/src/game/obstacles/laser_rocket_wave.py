@@ -1,5 +1,6 @@
 import pygame
 import random
+from os.path import join as pathJoin
 
 from framework.update_scheduler import UpdateScheduler
 from framework.sprite import Sprite
@@ -22,12 +23,12 @@ class LaserRocketWave:
         self.laserHeight = 40
         frameTime = 0.115
         laserImgs = [
-            pygame.image.load(RES_DIR + 'img/laser/laser1.png'),
-            pygame.image.load(RES_DIR + 'img/laser/laser2.png'),
-            pygame.image.load(RES_DIR + 'img/laser/laser3.png'),
-            pygame.image.load(RES_DIR + 'img/laser/laser2.png')
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, 'laser', 'laser1.png')),
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, 'laser', 'laser2.png')),
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, 'laser', 'laser3.png')),
         ]
-        self.baseLaserSprites = Animation(0, 0, self.laserWidth, self.laserHeight, laserImgs, frameTime)
+        laserImgs.append(laserImgs[1])
+        self.laserAnimation = Animation(0, 0, self.laserWidth, self.laserHeight, laserImgs, frameTime)
         self.lasers = []
         self.lasersPixelMasks = []
 
@@ -41,14 +42,14 @@ class LaserRocketWave:
         self.rocketHeight = 35
         self.warningWidth = 50
         self.warningHeight = 50
-        self.warningImg = pygame.image.load(RES_DIR + 'img/rocket_warning.png')
+        self.warningImg = pygame.image.load(pathJoin(RES_STATIC_TEXTURES_DIR, 'rocket_warning.png'))
         self.rocketFrameTime = 0.05
         self.rocketImg = [
-            pygame.image.load(RES_DIR + 'img/rocket/rocket1.png'),
-            pygame.image.load(RES_DIR + 'img/rocket/rocket2.png'),
-            pygame.image.load(RES_DIR + 'img/rocket/rocket3.png'),
-            pygame.image.load(RES_DIR + 'img/rocket/rocket2.png')
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, "rocket", "rocket1.png")),
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, "rocket", "rocket2.png")),
+            pygame.image.load(pathJoin(RES_ANIMATIONS_DIR, "rocket", "rocket3.png")),
         ]
+        self.rocketImg.append(self.rocketImg[1])
         self.currentRocket = None
         self.warningTime = 0.0
 
@@ -146,11 +147,11 @@ class LaserRocketWave:
     def ResetWave(self) -> None:
         # Lasere
         self.remainingLasers = self.totalLasers
-        self.lasers = [self.baseLaserSprites.Rotate(random.randint(0, 180)) for _ in range(self.totalLasers)]
+        self.lasers = [self.laserAnimation.Rotate(random.randint(0, 180)) for _ in range(self.totalLasers)]
         self.lasersPixelMasks = [pygame.mask.from_surface(laser.frames[0]) for laser in self.lasers]
         for i in range(self.totalLasers):
             self.lasers[i].PlayAnimation()
-            laserX = DISPLAY_WIDTH + i * (self.baseLaserSprites.GetSize()[0] + self.gapBetweenLasers)
+            laserX = DISPLAY_WIDTH + i * (self.laserAnimation.GetSize()[0] + self.gapBetweenLasers)
             laserY = random.randint(0, DISPLAY_HEIGHT - self.lasers[i].GetSize()[1])
             self.lasers[i].ChangeRelativePos((laserX, laserY))
             self.gameScene.gameLayer.AttachObject(self.lasers[i])
@@ -166,7 +167,7 @@ class LaserRocketWave:
                 spawnAreaHeight = areaEnd - areaStart
                 minHeight = 2 * CoinMatrix.coinHeight
                 blockHeight = random.randint(minHeight, int(0.5 * spawnAreaHeight)) if spawnAreaHeight >= minHeight else 0
-                blockWidth = self.baseLaserSprites.GetSize()[0]
+                blockWidth = self.laserAnimation.GetSize()[0]
                 blockX = laserX
                 blockY = areaStart + random.randint(0, spawnAreaHeight - blockHeight + 1)
                 self.coinBlocks.append(CoinMatrix(blockX, blockY, blockWidth, blockHeight))
