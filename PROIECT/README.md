@@ -69,3 +69,4 @@ Inițial, interfața prin care cumperi vieți era încorporată în clasa GameSe
 •	Observer, modul de funcționare al claselor EventsManager și UpdateScheduler: înregistrez metode în acele clase ce urmează să fie apelate atunci când apar evenimente (EventManager) sau când apare un nou frame al aplicatiei (UpdateScheduler)
 
 ## Diagrama UML
+![UML](https://github.com/bestman4111/Laborator-MDS/blob/main/PROIECT/diagrama/diagrama.png)
