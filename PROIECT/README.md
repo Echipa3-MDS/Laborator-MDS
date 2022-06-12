@@ -37,4 +37,5 @@ Fiecare gamă de teste – teste ce pot fi grupate – este pusă în câte o cl
 Metodele speciale folosite de noi sunt:
 
 •	setUp() și tearDown(), metode ce se apelează la fiecare test, setUp inainte de test, iar tearDown dupa test
+
 •	setUpClass() și tearDownClass(), metode ce se apelează la începutul, respectiv la sfârșitul rulării testelor din acea clasă
