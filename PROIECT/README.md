@@ -39,3 +39,33 @@ Metodele speciale folosite de noi sunt:
 •	setUp() și tearDown(), metode ce se apelează la fiecare test, setUp inainte de test, iar tearDown dupa test
 
 •	setUpClass() și tearDownClass(), metode ce se apelează la începutul, respectiv la sfârșitul rulării testelor din acea clasă
+
+Aceste metode speciale funcționează precum constructorii și destructorii.
+
+Pentru a defini testele mai rapid, în același folder sunt un modul cu constante și un folder cu resurse, pe care le folosim de mai multe ori.
+
+Pentru a rula testele, folosim script-ul run_tests.py. Acesta parseaza directoarele cu module de teste (unittest.TestLoader) și apoi le apelează (unittest.TextTestRunner).
+
+## Bug reporting
+Au fost întâlnite următoarele bug-uri:
+
+1. Atunci când se apela funcția PlayNewScene(), scena se schimba, dar aplicația se bloca.
+2. Textul unui buton atașat la RenderedObject nu se află pe buton.
+3. La o primă încărcare, meniul funcționează așa cum trebuie, însă dacă este încărcat din nou, niciunul dintre butoane nu funcționează.
+
+Aceste bug-uri au fost sesizate în secțiunea Issues, de pe platforma GitHub și au fost rezolvate în commit-uri ulterioare.
+
+## Build tool
+Pentru a realiza aplicația, s-a folosit programul Visual Studio Code al celor de la Microsoft. Pentru a face build aplicației, ca să putem exporta sub formă de executabil, am folosit un pachet Python numit PyInstaller.
+
+## Refactoring
+Inițial, interfața prin care cumperi vieți era încorporată în clasa GameSession, clasă ce presupune jocul efectiv. Ulterior, această interfață a fost mutată într-un modul separat.
+
+## Design patterns
+În procesul de dezvoltare a aplicației noastre, am folosit următoarele concepte de Design pattern:
+
+•	Singleton (clasele App, EventsManager, UpdateScheduler)
+
+•	Observer, modul de funcționare al claselor EventsManager și UpdateScheduler: înregistrez metode în acele clase ce urmează să fie apelate atunci când apar evenimente (EventManager) sau când apare un nou frame al aplicatiei (UpdateScheduler)
+
+## Diagrama UML
