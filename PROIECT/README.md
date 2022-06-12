@@ -11,4 +11,4 @@ După terminarea numărului de vieți, cât timp s-au acumulat cel puțin 200 de
 Aplicația este dezvoltată în limbajul Python, pentru sistemul de operare Windows.
 
 ## Demo
-Demo-ul jocului nostru poate fi gasit aici.
+Demo-ul jocului nostru poate fi gasit [aici](https://www.youtube.com/watch?v=e4r82uQ2hro).
