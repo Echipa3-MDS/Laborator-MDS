@@ -1,9 +1,4 @@
-# MDS Jetpack
-Jocul a fost gândit și creat de echipa: Culea Ionel Alexandru, Hodoroabă Ștefan Emanuel, Lazăr Mihai, Niculae Tiberiu Constantin.
-<<<<<<< HEAD
-=======
-=======
-# <img align="left" src="https://github.com/bestman4111/Laborator-MDS/blob/main/PROIECT/res/jetpack.png" width="38">MDS Jetpack
+# <img src="https://user-images.githubusercontent.com/79095586/173258193-8e08228d-5b79-46d6-aa59-570b10735068.png" width="33"> MDS Jetpack
 Aplicația a fost gândită și creată de echipa formată din: Culea Ionel-Alexandru, Hodoroabă Ștefan-Emanuel, Lazăr Mihai, Niculae Tiberiu-Constantin.
 
 ## Descrierea proiectului
@@ -65,5 +60,3 @@ Inițial, interfața prin care cumperi vieți era încorporată în clasa GameSe
 <p align="center">
   <img src="https://github.com/bestman4111/Laborator-MDS/blob/main/PROIECT/diagrama.png" width="600">
 </p>
->>>>>>> a493dcf (Modificat README)
->>>>>>> 70193d0 (Actualizat README)
