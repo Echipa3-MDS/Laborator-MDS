@@ -17,6 +17,7 @@ Demo-ul jocului nostru poate fi gasit [aici](https://www.youtube.com/watch?v=e4r
 User stories reprezintă niște probleme ridicate de oameni pe care aplicația noastră le rezolvă.
 
 Împreună, am reușit să compunem următoarele 10:
+
 1. Jocul va fi de tip "Endless runner".
 2. Jocul va conține diverse obstacole ce vor apărea în mod aleatoriu și vor încheia sesiunea de joc în momentul coliziunii cu jucătorul.
 3. În cazul în care jocul se încheie prin coliziunea cu un obstacol, jucătorul poate continua sesiunea de joc dacă acesta mai are "vieți".
@@ -34,5 +35,6 @@ Testele sunt făcute cu framework-ul unittest din Python. Testele concepute de n
 Fiecare gamă de teste – teste ce pot fi grupate – este pusă în câte o clasă, cu o denumire oarecare, dar care moștenește clasa unittest.TestCase. Fiecare metodă a claselor definite de noi, exceptând câteva metode mai speciale, reprezintă un test. Fiecare denumire de metodă-test trebuie să înceapă cu ”test_”, altfel nu e luată în considerare la procesul de testare. Scopul unei metode-test este să facă assert-uri, adică să facă efectiv verificarea relevantă metodei testate (de preferat, fiecare metodă să aibă un singur assert).
 
 Metodele speciale folosite de noi sunt:
+
 •	setUp() și tearDown(), metode ce se apelează la fiecare test, setUp inainte de test, iar tearDown dupa test
 •	setUpClass() și tearDownClass(), metode ce se apelează la începutul, respectiv la sfârșitul rulării testelor din acea clasă
