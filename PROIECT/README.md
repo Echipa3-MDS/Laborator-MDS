@@ -18,25 +18,25 @@ User stories reprezintă niște probleme ridicate de oameni pe care aplicația n
 
 Împreună, am reușit să compunem următoarele 10:
 
-1.	Jocul va fi de tip "Endless runner".
+1. Jocul va fi de tip "Endless runner".
 
-2.	Jocul va conține diverse obstacole ce vor apărea în mod aleatoriu și vor încheia sesiunea de joc în momentul coliziunii cu jucătorul.
+2. Jocul va conține diverse obstacole ce vor apărea în mod aleatoriu și vor încheia sesiunea de joc în momentul coliziunii cu jucătorul.
 
-3.	În cazul în care jocul se încheie prin coliziunea cu un obstacol, jucătorul poate continua sesiunea de joc dacă acesta mai are "vieți".
+3. În cazul în care jocul se încheie prin coliziunea cu un obstacol, jucătorul poate continua sesiunea de joc dacă acesta mai are "vieți".
 
-4.	Jocul va crește în dificultate pe măsură ce scorul crește.
+4. Jocul va crește în dificultate pe măsură ce scorul crește.
 
-5.	Pe parcursul jocului, jucătorul poate colecta monede ce îl vor ajuta să cumpere vieți. La finalul jocului, monedele rămase vor contribui la scor.
+5. Pe parcursul jocului, jucătorul poate colecta monede ce îl vor ajuta să cumpere vieți. La finalul jocului, monedele rămase vor contribui la scor.
 
-6.	La finalul jocului, jucătorul va putea să-și salveze scorul.
+6. La finalul jocului, jucătorul va putea să-și salveze scorul.
 
-7.	Sesiunea de joc va avea opțiunea de pauză.
+7. Sesiunea de joc va avea opțiunea de pauză.
 
-8.	Aplicația va avea o secțiune de instrucțiuni ce arată controalele, descrie desfășurarea jocului și scopul acestuia.
+8. Aplicația va avea o secțiune de instrucțiuni ce arată controalele, descrie desfășurarea jocului și scopul acestuia.
 
-9.	Aplicația va putea fi pusă pe mute atât din meniul principal, cât și din timpul jocului.
+9. Aplicația va putea fi pusă pe mute atât din meniul principal, cât și din timpul jocului.
 
-10.	Aplicația va avea o secțiune de High Scores.
+10. Aplicația va avea o secțiune de High Scores.
 
 ## Teste automate
 Testele sunt făcute cu framework-ul unittest din Python. Testele concepute de noi se împart în două categorii: teste de pe partea de framework a aplicației și teste pentru logica aplicației. Fiecare test verifică o anumită funcționalitate a framework-ului, respectiv a aplicației și sunt independente între ele.
