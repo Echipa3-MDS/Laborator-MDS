@@ -1,0 +1,1 @@
+Disclaimer: I do not own any of the assets found in this directory or in its subdirectories. The assets are just used in different parts of the project.

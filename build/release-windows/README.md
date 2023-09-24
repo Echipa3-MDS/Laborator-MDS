@@ -1,0 +1,1 @@
+This executable was made using [PyInstaller](https://pyinstaller.org/en/stable/) that bundles the [Python](https://pyinstaller.org/en/stable/) interpreter along with the application code.
